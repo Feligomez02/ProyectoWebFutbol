@@ -9,6 +9,10 @@ app.get("/", (req, res) => {
   res.send("Backend inicial TP2");
 });
 
+const paisesRouter = require("./routes/paises");
+app.use(paisesRouter);
+
+
 // levantar servidor
 const port = 3000;
 app.listen(port, () => {
