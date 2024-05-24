@@ -32,7 +32,7 @@ async function CrearBaseSiNoExiste() {
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      "CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date);"
+      "CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date NOT NULL);"
     );
     console.log("tabla de paises creada!");
     await db.run(
@@ -50,7 +50,7 @@ async function CrearBaseSiNoExiste() {
       `CREATE table ciudades( 
               IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT
             , Nombre text NOT NULL UNIQUE
-            , FechaCiudad date
+            , FechaCiudad date NOT NULL
             , IdPais INTEGER NOT NULL
             ,FOREIGN KEY (IdPais) REFERENCES ciudades(IdPais)
             );`

@@ -2,6 +2,7 @@ const express = require("express");
 
 // crear servidor
 const app = express();
+require("./base-orm/sqlite-init");  // crear base si no existe
 
 // controlar ruta
 app.get("/", (req, res) => {
