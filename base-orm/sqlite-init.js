@@ -10,33 +10,41 @@ async function CrearBaseSiNoExiste() {
   let res = null;
 
   res = await db.get(
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'",
+    `SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'`,
     []
   );
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      "CREATE table usuarios( IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Clave text NOT NULL, Rol text NOT NULL);"
+      `CREATE table usuarios( IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Clave text NOT NULL, Rol text NOT NULL);`
     );
     console.log("tabla usuarios creada!");
     await db.run(
-      "insert into usuarios values	(1,'admin','123','admin'),(2,'pedro','123','member'),(3,'felipe','123','member'),(4,'simon','123','member'),(5,'valenitno','123','member')));"
+      `INSERT INTO usuarios (IdUsuario, Nombre, Clave) VALUES	(1,'admin','123','admin'),(2,'pedro','123','member'),(3,'felipe','123','member'),(4,'simon','123','member'),(5,'valenitno','123','member')));`
     );
   }
 
   existe = false;
-  res = await db.get(
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'",
-    []
-  );
+  tablaPaises = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'" ; 
+  res = await db.get(tablaPaises,[]);
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      "CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date NOT NULL);"
+      `CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date NOT NULL);`
     );
     console.log("tabla de paises creada!");
     await db.run(
-      "insert into paises values    (1,'Argentina','2022-01-01'),(2,'Brasil', '2022-01-02'),(3,'Alemania', '2022-01-03'),(4,'USA', '2022-01-04'),(5,'Francia, '2022-01-05'),(6,'Canada', '2022-01-06'),(7,'Spain', '2022-01-07'),(8,'Chile', '2022-01-08'),(9,'Italia', '2022-01-09'),(10,'Inglaterra', '2022-01-10');"
+      `INSERT INTO paises (IdPais, Nombre, Fecha) VALUES 
+      (1,'Argentina','2022-01-01'),
+      (2,'Brasil', '2022-01-02'),
+      (3,'Alemania', '2022-01-03'),
+      (4,'USA', '2022-01-04'),
+      (5,'Francia', '2022-01-05'),
+      (6,'Canada', '2022-01-06'),
+      (7,'Spain', '2022-01-07'),
+      (8,'Chile', '2022-01-08'),
+      (9,'Italia', '2022-01-09'),
+      (10,'Inglaterra', '2022-01-10');`
     );
   }
 
