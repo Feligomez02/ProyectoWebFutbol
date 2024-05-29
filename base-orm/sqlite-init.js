@@ -1,95 +1,130 @@
-// acceder a la base usando aa-sqlite
-const db = require("aa-sqlite");
 
-async function CrearBaseSiNoExiste() {
-  // abrir base, si no existe el archivo/base lo crea
-  await db.open("./.data/basetp2.db");
-  //await db.open(process.env.base);
+//Implementamos con sqlite3 porque aa-sqlite nos daba error.
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-  let existe = false;
-  let res = null;
-  
-  tablaUsuarios = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'" ;
-  res = await db.get(
-    tablaUsuarios,
-    []
-  );
-  if (res.contar > 0) existe = true;
-  if (!existe) {
-    await db.run(
-      `CREATE table usuarios( IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Clave text NOT NULL, Rol text NOT NULL);`
-    );
-    console.log("tabla usuarios creada!");
-    await db.run(
-      `INSERT INTO usuarios (IdUsuario, Nombre, Clave) VALUES	
-      (1,'admin','123','admin'),
-      (2,'pedro','123','member'),
-      (3,'felipe','123','member'),
-      (4,'simon','123','member'),
-      (5,'valentino','123','member');`
-    );
+// Establecer la ruta para el archivo de la base de datos fuera del directorio actual del script
+const dbPath = path.join(__dirname, '../.data/basetp2.db');
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error al abrir la base de datos:', err.message);
+  } else {
+    console.log('Base de datos abierta exitosamente');
+    initializeDatabase();
   }
+});
 
-  existe = false;
-  tablaPaises = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'" ; 
-  res = await db.get(tablaPaises,[]);
-  if (res.contar > 0) existe = true;
-  if (!existe) {
-    await db.run(
-      `CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date NOT NULL);`
-    );
-    console.log("tabla de paises creada!");
-    await db.run(
-      `INSERT INTO paises (IdPais, Nombre, Fecha) VALUES 
-      (1,'Argentina','2022-01-01'),
-      (2,'Brasil', '2022-01-02'),
-      (3,'Alemania', '2022-01-03'),
-      (4,'USA', '2022-01-04'),
-      (5,'Francia', '2022-01-05'),
-      (6,'Canada', '2022-01-06'),
-      (7,'Spain', '2022-01-07'),
-      (8,'Chile', '2022-01-08'),
-      (9,'Italia', '2022-01-09'),
-      (10,'Inglaterra', '2022-01-10');`
-    );
-  }
+function initializeDatabase() {
+  // Verificar y crear la tabla 'usuarios' si no existe
+  db.get("SELECT count(*) as contar FROM sqlite_schema WHERE type='table' AND name='usuarios'", (err, row) => {
+    if (err) {
+      console.error('Error al verificar la tabla usuarios:', err.message);
+    } else if (row.contar === 0) {
+      db.run(
+        `CREATE TABLE usuarios (
+          IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
+          Nombre TEXT NOT NULL UNIQUE,
+          Clave TEXT NOT NULL,
+          Rol TEXT NOT NULL
+        );`,
+        (err) => {
+          if (err) {
+            console.error('Error al crear la tabla usuarios:', err.message);
+          } else {
+            console.log("Tabla 'usuarios' creada!");
+            db.run(
+              `INSERT INTO usuarios (Nombre, Clave, Rol) VALUES
+              ('admin', '123', 'admin'),
+              ('pedro', '123', 'member'),
+              ('felipe', '123', 'member'),
+              ('simon', '123', 'member'),
+              ('valentino', '123', 'member');`
+            );
+          }
+        }
+      );
+    }
+  });
 
-  existe = false;
-  tablaCiudades =
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'ciudades'";
-  res = await db.get(tablaCiudades, []);
-  if (res.contar > 0) existe = true;
-  if (!existe) {
-    await db.run(
-      `CREATE table ciudades( 
-              IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT
-            , Nombre text NOT NULL UNIQUE
-            , FechaCiudad date NOT NULL
-            , IdPais INTEGER NOT NULL
-            ,FOREIGN KEY (IdPais) REFERENCES ciudades(IdPais)
-            );`
-    );
-    console.log("tabla de ciudades creada!");
+  // Verificar y crear la tabla 'paises' si no existe
+  db.get("SELECT count(*) as contar FROM sqlite_schema WHERE type='table' AND name='paises'", (err, row) => {
+    if (err) {
+      console.error('Error al verificar la tabla paises:', err.message);
+    } else if (row.contar === 0) {
+      db.run(
+        `CREATE TABLE paises (
+          IdPais INTEGER PRIMARY KEY AUTOINCREMENT,
+          Nombre TEXT NOT NULL UNIQUE,
+          Fecha DATE NOT NULL
+        );`,
+        (err) => {
+          if (err) {
+            console.error('Error al crear la tabla paises:', err.message);
+          } else {
+            console.log("Tabla 'paises' creada!");
+            db.run(
+              `INSERT INTO paises (Nombre, Fecha) VALUES
+              ('Argentina', '2022-01-01'),
+              ('Brasil', '2022-01-02'),
+              ('Alemania', '2022-01-03'),
+              ('USA', '2022-01-04'),
+              ('Francia', '2022-01-05'),
+              ('Canada', '2022-01-06'),
+              ('Spain', '2022-01-07'),
+              ('Chile', '2022-01-08'),
+              ('Italia', '2022-01-09'),
+              ('Inglaterra', '2022-01-10');`
+            );
+          }
+        }
+      );
+    }
+  });
 
-    await db.run(
-    `INSERT INTO ciudades (Nombre, FechaCiudad, IdPais) VALUES 
-    ('Cordoba', '2022-01-01', 1),
-    ('Rio de Janeiro', '2022-01-02', 2),
-    ('Madrid', '2022-01-03', 7),
-    ('Roma', '2022-01-04', 9),
-    ('Londres', '2022-01-05', 10),
-    ('Santiago', '2022-01-06', 8),
-    ('Berlin', '2022-01-07', 3),
-    ('Miami', '2022-01-08', 4),
-    ('Paris', '2022-01-09', 5),
-    ('Vancouver', '2022-01-10', 6);`
-);
-  }
+  // Verificar y crear la tabla 'ciudades' si no existe
+  db.get("SELECT count(*) as contar FROM sqlite_schema WHERE type='table' AND name='ciudades'", (err, row) => {
+    if (err) {
+      console.error('Error al verificar la tabla ciudades:', err.message);
+    } else if (row.contar === 0) {
+      db.run(
+        `CREATE TABLE ciudades (
+          IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT,
+          Nombre TEXT NOT NULL UNIQUE,
+          FechaCiudad DATE NOT NULL,
+          IdPais INTEGER NOT NULL,
+          FOREIGN KEY (IdPais) REFERENCES paises(IdPais)
+        );`,
+        (err) => {
+          if (err) {
+            console.error('Error al crear la tabla ciudades:', err.message);
+          } else {
+            console.log("Tabla 'ciudades' creada!");
+            db.run(
+              `INSERT INTO ciudades (Nombre, FechaCiudad, IdPais) VALUES
+              ('Cordoba', '2022-01-01', 1),
+              ('Rio de Janeiro', '2022-01-02', 2),
+              ('Madrid', '2022-01-03', 7),
+              ('Roma', '2022-01-04', 9),
+              ('Londres', '2022-01-05', 10),
+              ('Santiago', '2022-01-06', 8),
+              ('Berlin', '2022-01-07', 3),
+              ('Miami', '2022-01-08', 4),
+              ('Paris', '2022-01-09', 5),
+              ('Vancouver', '2022-01-10', 6);`
+            );
+          }
+        }
+      );
+    }
+  });
 
-  // cerrar la base
-  db.close();
+  // Cerrar la conexión de la base de datos después de la inicialización
+  db.close((err) => {
+    if (err) {
+      console.error('Error al cerrar la base de datos:', err.message);
+    } else {
+      console.log('Base de datos cerrada exitosamente');
+    }
+  });
 }
-
-CrearBaseSiNoExiste();
-
-module.exports =  CrearBaseSiNoExiste;
