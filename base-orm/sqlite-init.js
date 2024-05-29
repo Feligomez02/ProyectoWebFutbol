@@ -1,122 +1,82 @@
-const fs = require('fs');
-const path = require('path');
-const db = require('aa-sqlite');
-
-const dbPath = path.join(__dirname, '../.data/basetp2.db');
-const dbDir = path.dirname(dbPath);
-
-async function ensureDirectoryExistence(dir) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
-
-async function openDatabase(filePath) {
-  return new Promise((resolve, reject) => {
-    db.open(filePath)
-      .then(resolve)
-      .catch(err => reject("AA-SQLite3Open error: " + err.message));
-  });
-}
+// acceder a la base usando aa-sqlite
+const db = require("aa-sqlite");
 
 async function CrearBaseSiNoExiste() {
-  try {
-    // Ensure the directory exists
-    await ensureDirectoryExistence(dbDir);
+  // abrir base, si no existe el archivo/base lo crea
+  await db.open("./.data/basetp.db");
+  //await db.open(process.env.base);
 
-    // Open the database, create it if it doesn't exist
-    await openDatabase(dbPath);
+  let existe = false;
+  let res = null;
 
-    // Check and create 'usuarios' table if it doesn't exist
-    let tablaUsuarios = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'";
-    let res = await db.get(tablaUsuarios);
-    if (res.contar === 0) {
-      await db.run(
-        `CREATE TABLE usuarios(
-          IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT,
-          Nombre TEXT NOT NULL UNIQUE,
-          Clave TEXT NOT NULL,
-          Rol TEXT NOT NULL
-        );`
-      );
-      console.log("Tabla 'usuarios' creada!");
-
-      await db.run(
-        `INSERT INTO usuarios (Nombre, Clave, Rol) VALUES
-        ('admin', '123', 'admin'),
-        ('pedro', '123', 'member'),
-        ('felipe', '123', 'member'),
-        ('simon', '123', 'member'),
-        ('valentino', '123', 'member');`
-      );
-    }
-
-    // Check and create 'paises' table if it doesn't exist
-    let tablaPaises = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'";
-    res = await db.get(tablaPaises);
-    if (res.contar === 0) {
-      await db.run(
-        `CREATE TABLE paises(
-          IdPais INTEGER PRIMARY KEY AUTOINCREMENT,
-          Nombre TEXT NOT NULL ,
-          Fecha text 
-        );`
-      );
-      console.log("Tabla 'paises' creada!");
-
-      await db.run(
-        `INSERT INTO paises (IdPais, Nombre, Fecha) VALUES
-        (1,'Argentina', '2022-01-01'),
-        (2,'Brasil', '2022-01-02'),
-        (3,'Alemania', '2022-01-03'),
-        (4,'USA', '2022-01-04'),
-        (5,'Francia', '2022-01-05'),
-        (6,'Canada', '2022-01-06'),
-        (7,'Spain', '2022-01-07'),
-        (8,'Chile', '2022-01-08'),
-        (9,'Italia', '2022-01-09'),
-        (10,'Inglaterra', '2022-01-10');`
-      );
-    }
-
-    // Check and create 'ciudades' table if it doesn't exist
-    let tablaCiudades = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'ciudades'";
-    res = await db.get(tablaCiudades);
-    if (res.contar === 0) {
-      await db.run(
-        `CREATE TABLE ciudades(
-          IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT,
-          Nombre TEXT NOT NULL UNIQUE,
-          FechaCiudad TEXT,
-          IdPais INTEGER NOT NULL,
-          FOREIGN KEY (IdPais) REFERENCES paises(IdPais)
-        );`
-      );
-      console.log("Tabla 'ciudades' creada!");
-
-      await db.run(
-        `INSERT INTO ciudades (IdCiudad, Nombre, FechaCiudad, IdPais) VALUES
-        (1,'Cordoba', '2022-01-01', 1),
-        (2,'Rio de Janeiro', '2022-01-02', 2),
-        (3,'Madrid', '2022-01-03', 7),
-        (4,'Roma', '2022-01-04', 9),
-        (5,'Londres', '2022-01-05', 10),
-        (6,'Santiago', '2022-01-06', 8),
-        (7,'Berlin', '2022-01-07', 3),
-        (8,'Miami', '2022-01-08', 4),
-        (9,'Paris', '2022-01-09', 5),
-        (10,'Vancouver', '2022-01-10', 6);`
-      );
-    }
-
-  } catch (error) {
-    console.error("Error al crear o acceder a la base de datos:", error);
-  } finally {
-    // Ensure the database is closed
-    await db.close();
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      "CREATE table usuarios( IdUsuario INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Clave text NOT NULL, Rol text NOT NULL);"
+    );
+    console.log("tabla usuarios creada!");
+    await db.run(
+      "insert into usuarios values	(1,'admin','123','admin'),(2,'juan','123','member');"
+    );
   }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      "CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date);"
+    );
+    console.log("tabla paises creada!");
+    await db.run(
+      "insert into paises values	(1, 'Argentina', '1816-07-09'), (2, 'Japón', '660-01-01'), (3, 'Australia', '1901-01-01'), (4, 'Nigeria', '1960-10-01'), (5, 'Canadá', '1867-07-01'), (6, 'Egipto', '1922-02-28'), (7, 'Noruega', '1814-05-17'), (8, 'Brasil', '1822-09-07'), (9, 'India', '1947-08-15'), (10, 'Sudáfrica', '1910-05-31');"
+    );
+  }
+
+  existe = false;
+  sql =
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'ciudades'";
+  res = await db.get(sql, []);
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE table ciudades( 
+              IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT
+            , Nombre text NOT NULL 
+            , PaisId integer
+            , FechaCiudad date,
+            FOREIGN KEY (PaisId) REFERENCES paises(IdPais)
+            );`
+    );
+    console.log("tabla ciudades creada!");
+
+    await db.run(
+      `insert into ciudades values
+        (1, 'Buenos Aires', 1, '1536-04-02'),
+        (2, 'Tokio', 2, '1457-01-01'),
+        (3, 'Sidney', 3, '1788-01-26'),
+        (4, 'Abuya', 4, '1991-12-12'),
+        (5, 'Ottawa', 5, '1857-01-01'),
+        (6, 'El Cairo', 6, '969-01-01'),
+        (7, 'Oslo', 7, '1048-01-01'),
+        (8, 'Brasilia', 8, '1960-04-21'),
+        (9, 'Nueva Delhi', 9, '1911-12-12'),
+        (10, 'Pretoria', 10, '1855-01-01')
+      ;`
+    );
+  }
+
+  // cerrar la base
+  db.close();
 }
 
 CrearBaseSiNoExiste();
 
-module.exports = CrearBaseSiNoExiste;
+module.exports =  CrearBaseSiNoExiste;

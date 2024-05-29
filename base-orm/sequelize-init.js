@@ -1,7 +1,7 @@
 // configurar ORM sequelize
 const { Sequelize, DataTypes } = require("sequelize");
 //const sequelize = new Sequelize("sqlite:" + process.env.base );
-const sequelize = new Sequelize("sqlite:" + "../.data/basetp2.db");
+const sequelize = new Sequelize("sqlite:" + "./.data/basetp.db");
 
 // definicion del modelo de datos
 const paises = sequelize.define(
@@ -29,15 +29,16 @@ const paises = sequelize.define(
     },
     Fecha: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       validate: {
-        notNull: {
+        isDate: {
           args: true,
-          msg: "Fecha es requerido",
-        }
-      }
+          msg: "Fecha debe ser tipo fecha",
+        },
+      },
     },
   },
+  
   {
     // pasar a mayusculas
     hooks: {
@@ -51,6 +52,7 @@ const paises = sequelize.define(
     timestamps: false,
   }
 );
+
 
 const ciudades = sequelize.define(
   "ciudades",
@@ -73,32 +75,28 @@ const ciudades = sequelize.define(
           msg: "Nombre debe ser tipo caracteres, entre 5 y 60 de longitud",
         },
       },
-      unique: {
-        args: true,
-        msg: "este Nombre ya existe en la tabla!",
-      },
     },
-    FechaCiudad: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-          notNull: {
-            args: true,
-            msg: "Fecha es requerido",
-          }
-        }
-      },
-    IdPais: {
+    PaisId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
           args: true,
-          msg: "IdPais es requerido",
+          msg: "PaisId es requerido",
         }
       }
     },
-    },
+    FechaCiudad: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "FechaCiudad debe ser tipo fecha",
+        },
+      }
+    }      
+  },
   {
     // pasar a mayusculas
     hooks: {
@@ -113,9 +111,9 @@ const ciudades = sequelize.define(
   }
 );
 
+
 module.exports = {
   sequelize,
   paises,
   ciudades,
 };
-
