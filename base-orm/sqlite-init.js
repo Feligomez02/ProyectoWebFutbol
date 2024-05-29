@@ -8,9 +8,10 @@ async function CrearBaseSiNoExiste() {
 
   let existe = false;
   let res = null;
-
+  
+  tablaUsuarios = "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'" ;
   res = await db.get(
-    `SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'usuarios'`,
+    tablaUsuarios,
     []
   );
   if (res.contar > 0) existe = true;
@@ -20,7 +21,12 @@ async function CrearBaseSiNoExiste() {
     );
     console.log("tabla usuarios creada!");
     await db.run(
-      `INSERT INTO usuarios (IdUsuario, Nombre, Clave) VALUES	(1,'admin','123','admin'),(2,'pedro','123','member'),(3,'felipe','123','member'),(4,'simon','123','member'),(5,'valenitno','123','member')));`
+      `INSERT INTO usuarios (IdUsuario, Nombre, Clave) VALUES	
+      (1,'admin','123','admin'),
+      (2,'pedro','123','member'),
+      (3,'felipe','123','member'),
+      (4,'simon','123','member'),
+      (5,'valentino','123','member');`
     );
   }
 
