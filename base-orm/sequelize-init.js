@@ -22,8 +22,8 @@ const paises = sequelize.define(
           msg: "Nombre es requerido",
         },
         len: {
-          args: [5, 30],
-          msg: "Nombre debe ser tipo caracteres, entre 5 y 30 de longitud",
+          args: [3, 30],
+          msg: "Nombre debe ser tipo caracteres, entre 3 y 30 de longitud",
         },
       },
     },
@@ -71,8 +71,8 @@ const ciudades = sequelize.define(
           msg: "Nombre es requerido",
         },
         len: {
-          args: [5, 60],
-          msg: "Nombre debe ser tipo caracteres, entre 5 y 60 de longitud",
+          args: [3, 60],
+          msg: "Nombre debe ser tipo caracteres, entre 3 y 60 de longitud",
         },
       },
     },
