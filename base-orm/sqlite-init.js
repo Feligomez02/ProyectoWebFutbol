@@ -26,49 +26,50 @@ async function CrearBaseSiNoExiste() {
 
   existe = false;
   res = await db.get(
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'paises'",
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'equipos'",
     []
   );
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      "CREATE table paises( IdPais INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL UNIQUE, Fecha date);"
+      "CREATE table equipos( IdEquipo INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL, FechaCreacion date, Activo boolean NOT NULL);"
     );
-    console.log("tabla paises creada!");
+    console.log("tabla equipos creada!");
     await db.run(
-      "insert into paises values	(1, 'Argentina', '1816-07-09'), (2, 'Japón', '660-01-01'), (3, 'Australia', '1901-01-01'), (4, 'Nigeria', '1960-10-01'), (5, 'Canadá', '1867-07-01'), (6, 'Egipto', '1922-02-28'), (7, 'Noruega', '1814-05-17'), (8, 'Brasil', '1822-09-07'), (9, 'India', '1947-08-15'), (10, 'Sudáfrica', '1910-05-31');"
+      "insert into equipos values	(1, 'River Plate', '1901-05-25', true), (2, 'Boca Juniors', '1905-04-03', true), (3, 'Independiente', '1905-08-01', true), (4, 'Racing Club', '1903-03-25', true), (5, 'San Lorenzo', '1908-04-01', true), (6, 'Vélez Sarsfield', '1910-01-01', true), (7, 'Estudiantes de La Plata', '1905-08-04', true), (8, 'Gimnasia y Esgrima La Plata', '1887-06-03', true), (9, 'Belgrano', '1905-03-19', true), (10, 'Rosario Central', '1889-12-24', true);"
     );
   }
 
   existe = false;
   sql =
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'ciudades'";
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'jugadores'";
   res = await db.get(sql, []);
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      `CREATE table ciudades( 
-              IdCiudad INTEGER PRIMARY KEY AUTOINCREMENT
+      `CREATE table jugadores( 
+              IdJugador INTEGER PRIMARY KEY AUTOINCREMENT
             , Nombre text NOT NULL 
-            , PaisId integer
-            , FechaCiudad date,
-            FOREIGN KEY (PaisId) REFERENCES paises(IdPais)
+            , EquipoId integer NOT NULL
+            , Activo boolean NOT NULL
+            , FechaNacimiento date,
+            FOREIGN KEY (EquipoId) REFERENCES equipos(IdEquipo)
             );`
     );
-    console.log("tabla ciudades creada!");
+    console.log("tabla jugadores creada!");
 
     await db.run(
-      `insert into ciudades values
-        (1, 'Buenos Aires', 1, '1536-04-02'),
-        (2, 'Tokio', 2, '1457-01-01'),
-        (3, 'Sidney', 3, '1788-01-26'),
-        (4, 'Abuya', 4, '1991-12-12'),
-        (5, 'Ottawa', 5, '1857-01-01'),
-        (6, 'El Cairo', 6, '969-01-01'),
-        (7, 'Oslo', 7, '1048-01-01'),
-        (8, 'Brasilia', 8, '1960-04-21'),
-        (9, 'Nueva Delhi', 9, '1911-12-12'),
-        (10, 'Pretoria', 10, '1855-01-01')
+      `insert into jugadores values
+      (1, 'Lionel Messi', 1, true, '1987-06-24'), 
+      (2, 'Carlos Tevez', 2, true, '1984-02-05'), 
+      (3, 'Sergio Agüero', 3, true, '1988-06-02'), 
+      (4, 'Diego Milito', 4, false, '1979-06-12'), 
+      (5, 'Néstor Ortigoza', 5, true, '1984-10-07'), 
+      (6, 'Maximiliano Moralez', 6, true, '1987-02-27'), 
+      (7, 'Juan Sebastián Verón', 7, false, '1975-03-09'), 
+      (8, 'Lucas Licht', 8, true, '1981-04-06'), 
+      (9, 'Matías Suárez', 9, true, '1988-05-09'), 
+      (10, 'Ángel Di María', 10, true, '1988-02-14')
       ;`
     );
   }

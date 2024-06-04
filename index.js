@@ -5,14 +5,13 @@ const app = express();
 app.use(express.json());
 require("./base-orm/sqlite-init.js");  // crear base si no existe
 
-const paisesRouter = require("./routes/paises");
-app.use(paisesRouter);
+const equiposRouter = require("./routes/equipos");
+app.use(equiposRouter);
 
-const ciudadesRouter = require("./routes/ciudades");
-app.use(ciudadesRouter);
+const jugadoresRouter = require("./routes/jugadores");
+app.use(jugadoresRouter);
 
-const alumnosRouter = require("./routes/alumnos");
-app.use(alumnosRouter);
+
 
 // controlar ruta
 app.get("/", (req, res) => {

@@ -4,10 +4,10 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize("sqlite:" + "./.data/basetp.db");
 
 // definicion del modelo de datos
-const paises = sequelize.define(
-  "paises",
+const equipos = sequelize.define(
+  "equipos",
   {
-    IdPais: {
+    IdEquipo: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -27,13 +27,23 @@ const paises = sequelize.define(
         },
       },
     },
-    Fecha: {
+    FechaCreacion: {
       type: DataTypes.DATE,
       allowNull: true,
       validate: {
         isDate: {
           args: true,
-          msg: "Fecha debe ser tipo fecha",
+          msg: "FechaCreacion debe ser tipo fecha",
+        },
+      },
+    },
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Activo es requerido",
         },
       },
     },
@@ -42,9 +52,9 @@ const paises = sequelize.define(
   {
     // pasar a mayusculas
     hooks: {
-      beforeValidate: function (paises, options) {
-        if (typeof paises.Nombre === "string") {
-          paises.Nombre = paises.Nombre.toUpperCase().trim();
+      beforeValidate: function (equipos, options) {
+        if (typeof equipos.Nombre === "string") {
+          equipos.Nombre = equipos.Nombre.toUpperCase().trim();
         }
       },
     },
@@ -54,10 +64,10 @@ const paises = sequelize.define(
 );
 
 
-const ciudades = sequelize.define(
-  "ciudades",
+const jugadores = sequelize.define(
+  "jugadores",
   {
-    IdCiudad: {
+    IdJugador: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -76,17 +86,27 @@ const ciudades = sequelize.define(
         },
       },
     },
-    PaisId: {
+    EquipoId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
           args: true,
-          msg: "PaisId es requerido",
+          msg: "EquipoId es requerido",
         }
       }
     },
-    FechaCiudad: {
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Activo es requerido",
+        },
+      },
+    },
+    FechaNacimiento: {
       type: DataTypes.DATE,
       allowNull: true,
       validate: {
@@ -100,9 +120,9 @@ const ciudades = sequelize.define(
   {
     // pasar a mayusculas
     hooks: {
-      beforeValidate: function (ciudades, options) {
-        if (typeof ciudades.Nombre === "string") {
-          ciudades.Nombre = ciudades.Nombre.toUpperCase().trim();
+      beforeValidate: function (jugadores, options) {
+        if (typeof jugadores.Nombre === "string") {
+          jugadores.Nombre = jugadores.Nombre.toUpperCase().trim();
         }
       },
     },
@@ -166,7 +186,7 @@ const alumnos = sequelize.define(
 
 module.exports = {
   sequelize,
-  paises,
-  ciudades,
+  equipos,
+  jugadores,
   alumnos,
 };

@@ -4,24 +4,24 @@ const router = express.Router();
 const db = require("../base-orm/sequelize-init");
 const { ValidationError } = require("sequelize");
 
-router.get("/api/paises", async function (req, res, next) {
-  let data = await db.paises.findAll({
-    attributes: ["IdPais", "Nombre", "Fecha"],
+router.get("/api/equipos", async function (req, res, next) {
+  let data = await db.equipos.findAll({
+    attributes: ["IdEquipo", "Nombre", "FechaCreacion", "Activo"],
   });
   res.json(data);
 });
 
-router.get("/api/paises/:id", async function (req, res, next) {
-  let data = await db.paises.findByPk(req.params.id);
+router.get("/api/equipos/:id", async function (req, res, next) {
+  let data = await db.equipos.findByPk(req.params.id);
   res.json(data);
 });
 
-router.post("/api/paises/", async (req, res) => {
+router.post("/api/equipos/", async (req, res) => {
   try {
     // Agregar registro de depuración para imprimir el cuerpo de la solicitud
     console.log("Cuerpo de la solicitud POST:", req.body);
 
-    let data = await db.paises.create(req.body);
+    let data = await db.equipos.create(req.body);
     res.json(data);
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -32,10 +32,10 @@ router.post("/api/paises/", async (req, res) => {
   }
 });
 
-router.put("/api/paises/:id", async (req, res) => {
+router.put("/api/equipos/:id", async (req, res) => {
   try {
-    let data = await db.paises.update(req.body, {
-      where: { IdPais: req.params.id },
+    let data = await db.equipos.update(req.body, {
+      where: { IdEquipo: req.params.id },
     });
     res.json(data);
   } catch (error) {
@@ -47,10 +47,10 @@ router.put("/api/paises/:id", async (req, res) => {
   }
 });
 
-router.delete("/api/paises/:id", async (req, res) => {
+router.delete("/api/equipos/:id", async (req, res) => {
   try {
-    let data = await db.paises.destroy({
-      where: { IdPais: req.params.id },
+    let data = await db.equipos.destroy({
+      where: { IdEquipo: req.params.id },
     });
     res.json(data);
   } catch (error) {
