@@ -21,7 +21,7 @@ describe('POST /api/alumnos', function () {
     it('debería crear un nuevo alumno', async function () {
       const res = await request(app)
         .post('/api/alumnos')
-        .send({ Nombre: 'Mirta', Fecha: '2024-06-01' });
+        .send({ NombreAlumno: 'Mirta', FechaAlumno: '2024-06-01' });
   
       // Agregar un registro de depuración para ver el cuerpo de la respuesta
       if (res.statusCode !== 200) {
@@ -58,7 +58,7 @@ describe('DELETE /api/alumnos/:id', function () {
       .post('/api/alumnos')
       .send({ NombreAlumno: 'AlumnosToDelete', FechaAlumno: '2024-01-01' });
     
-    const res = await request(app).delete(`/api/alumnos/${AlumnosToDelete.body.IdPais}`);
+    const res = await request(app).delete(`/api/alumnos/${alumnosToDelete.body.IdAlumno}`);
     expect(res.statusCode).toBe(200);
   });
 });
