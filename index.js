@@ -11,7 +11,8 @@ app.use(paisesRouter);
 const ciudadesRouter = require("./routes/ciudades");
 app.use(ciudadesRouter);
 
-
+const alumnosRouter = require("./routes/alumnos");
+app.use(alumnosRouter);
 
 // controlar ruta
 app.get("/", (req, res) => {

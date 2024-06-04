@@ -73,6 +73,25 @@ async function CrearBaseSiNoExiste() {
     );
   }
 
+  existe=false
+  sql=
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'alumnos'"
+  res = await db.get(sql,[])
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      "CREATE table alumnos( IdAlumno INTEGER PRIMARY KEY AUTOINCREMENT, NombreAlumno text NOT NULL UNIQUE, FechaAlumno date);"
+    );
+    console.log("tabla alumnos creada!");
+    await db.run(
+        "INSERT INTO alumnos VALUES (1, 'Carlos', '2024-05-10'), (2, 'María', '2024-05-11'), (3, 'Juan', '2024-05-12'), (4, 'Ana', '2024-05-13'), (5, 'Luis', '2024-05-14'), (6, 'Sofía', '2024-05-15'), (7, 'Pablo', '2024-05-16'), (8, 'Andrea', '2024-05-17'), (9, 'Daniel', '2024-05-18'), (10, 'Lucía', '2024-05-19');"
+      );
+  }
+
+
+
+
+
   // cerrar la base
   db.close();
 }

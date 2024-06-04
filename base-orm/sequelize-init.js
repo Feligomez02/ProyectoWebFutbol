@@ -112,8 +112,61 @@ const ciudades = sequelize.define(
 );
 
 
+// definicion del modelo de datos
+const alumnos = sequelize.define(
+  "alumnos",
+  {
+    IdAlumno: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    NombreAlumno: {
+      // todo evitar que string autocomplete con espacios en blanco, debería ser varchar sin espacios
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "NombreAlumno es requerido",
+        },
+        len: {
+          args: [3, 30],
+          msg: "NombreAlumno debe ser tipo caracteres, entre 3 y 30 de longitud",
+        },
+      },
+    },
+    FechaAlumno: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "FechaAlumno debe ser tipo fecha",
+        },
+      },
+    },
+  },
+  
+  {
+    // pasar a mayusculas
+    hooks: {
+      beforeValidate: function (alumnos, options) {
+        if (typeof alumnos.NombreAlumno === "string") {
+          alumnos.NombreAlumno = alumnos.NombreAlumno.toUpperCase().trim();
+        }
+      },
+    },
+
+    timestamps: false,
+  }
+);
+
+
+
 module.exports = {
   sequelize,
   paises,
   ciudades,
+  alumnos,
 };
