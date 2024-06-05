@@ -59,8 +59,9 @@ describe('DELETE /api/resultados/:id', function () {
     const resultadoToDelete = await request(app)
       .post('/api/resultados')
       .send({ Descripcion: 'ResultadoToDelete', TorneoId: 5, Activo: true,  FechaResultado: '2024-01-01' });
-    }); });
+    
     
     const res = await request(app).delete(`/api/resultados/${resultadoToDelete.body.IdResultado}`);
         expect(res.statusCode).toBe(200);
-    });
+      }); 
+});
