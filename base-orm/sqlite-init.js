@@ -74,19 +74,20 @@ async function CrearBaseSiNoExiste() {
     );
   }
 
-  existe=false
-  sql=
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'alumnos'"
-  res = await db.get(sql,[])
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'partidos'",
+    []
+  );
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-      "CREATE table alumnos( IdAlumno INTEGER PRIMARY KEY AUTOINCREMENT, NombreAlumno text NOT NULL UNIQUE, FechaAlumno date);"
+      "CREATE table partidos( IdPartido INTEGER PRIMARY KEY AUTOINCREMENT, NombrePartido text NOT NULL, FechaPartido date, ActivoPartido boolean NOT NULL);"
     );
-    console.log("tabla alumnos creada!");
+    console.log("tabla partidos creada!");
     await db.run(
-        "INSERT INTO alumnos VALUES (1, 'Carlos', '2024-05-10'), (2, 'María', '2024-05-11'), (3, 'Juan', '2024-05-12'), (4, 'Ana', '2024-05-13'), (5, 'Luis', '2024-05-14'), (6, 'Sofía', '2024-05-15'), (7, 'Pablo', '2024-05-16'), (8, 'Andrea', '2024-05-17'), (9, 'Daniel', '2024-05-18'), (10, 'Lucía', '2024-05-19');"
-      );
+      "insert into partidos values	(1, 'Clásico de la Ciudad', '2024-06-10', true), (2, 'Final de Copa', '2024-07-02', true), (3, 'Derbi Local', '2024-06-20', true), (4, 'Partido Amistoso', '2024-06-15', false), (5, 'Semifinal de Liga', '2024-06-25', true), (6, 'Partido de Pretemporada', '2024-07-10', true), (7, 'Encuentro Internacional', '2024-06-18', true), (8, 'Partido Benéfico', '2024-07-05', false), (9, 'Revancha de Clásico', '2024-07-12', true), (10, 'Partido de Inauguración', '2024-06-08', true);"
+    );
   }
 
 

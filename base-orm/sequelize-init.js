@@ -133,36 +133,46 @@ const jugadores = sequelize.define(
 
 
 // definicion del modelo de datos
-const alumnos = sequelize.define(
-  "alumnos",
+const partidos = sequelize.define(
+  "partidos",
   {
-    IdAlumno: {
+    IdPartido: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    NombreAlumno: {
+    NombrePartido: {
       // todo evitar que string autocomplete con espacios en blanco, debería ser varchar sin espacios
       type: DataTypes.STRING(30),
       allowNull: false,
       validate: {
         notEmpty: {
           args: true,
-          msg: "NombreAlumno es requerido",
+          msg: "NombrPartido es requerido",
         },
         len: {
           args: [3, 30],
-          msg: "NombreAlumno debe ser tipo caracteres, entre 3 y 30 de longitud",
+          msg: "NombrePartido debe ser tipo caracteres, entre 3 y 30 de longitud",
         },
       },
     },
-    FechaAlumno: {
+    FechaPartido: {
       type: DataTypes.DATE,
       allowNull: true,
       validate: {
         isDate: {
           args: true,
-          msg: "FechaAlumno debe ser tipo fecha",
+          msg: "FechaPartido debe ser tipo fecha",
+        },
+      },
+    },
+    ActivoPartido: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "ActivoPartido es requerido",
         },
       },
     },
@@ -171,9 +181,9 @@ const alumnos = sequelize.define(
   {
     // pasar a mayusculas
     hooks: {
-      beforeValidate: function (alumnos, options) {
-        if (typeof alumnos.NombreAlumno === "string") {
-          alumnos.NombreAlumno = alumnos.NombreAlumno.toUpperCase().trim();
+      beforeValidate: function (partidos, options) {
+        if (typeof partidos.NombrePartido === "string") {
+          partidos.NombrePartido = partidos.NombrePartido.toUpperCase().trim();
         }
       },
     },
@@ -188,5 +198,5 @@ module.exports = {
   sequelize,
   equipos,
   jugadores,
-  alumnos,
+  partidos,
 };
