@@ -178,16 +178,16 @@ async function CrearBaseSiNoExiste() {
 
     await db.run(
       `insert into resultados values
-      (1, 'Resultado del partido 1 del Torneo 7', 7, '2024-06-01', true), 
-      (2, 'Resultado del partido 2 del Torneo 5', 5, '2024-06-02', true), 
-      (3, 'Resultado del partido 3 del Torneo 1', 1, '2024-06-03', false), 
-      (4, 'Resultado del partido 1 del Torneo 2', 2, '2024-06-04', true), 
-      (5, 'Resultado del partido 2 del Torneo 9', 9, '2024-06-05', false), 
-      (6, 'Resultado del partido 3 del Torneo 6', 6, '2024-06-06', true), 
-      (7, 'Resultado del partido 1 del Torneo 10', 10, '2024-06-07', true), 
-      (8, 'Resultado del partido 2 del Torneo 1', 1, '2024-06-08', false), 
-      (9, 'Resultado del partido 3 del Torneo 7', 7, '2024-06-09', true), 
-      (10, 'Resultado del partido 4 del Torneo 1', 1, '2024-06-10', true);
+      (1, 'Resultado del partido 1 del Torneo 7', 7, true, '2024-06-01'), 
+      (2, 'Resultado del partido 2 del Torneo 5', 5, false, '2024-06-02'), 
+      (3, 'Resultado del partido 3 del Torneo 1', 1, true, '2024-06-03'), 
+      (4, 'Resultado del partido 1 del Torneo 2', 2, true, '2024-06-04'), 
+      (5, 'Resultado del partido 2 del Torneo 9', 9, false, '2024-06-05'), 
+      (6, 'Resultado del partido 3 del Torneo 6', 6, false, '2024-06-06'), 
+      (7, 'Resultado del partido 1 del Torneo 10', 10, true, '2024-06-07'), 
+      (8, 'Resultado del partido 2 del Torneo 1', 1, false, '2024-06-08'), 
+      (9, 'Resultado del partido 3 del Torneo 7', 7, true, '2024-06-09'), 
+      (10, 'Resultado del partido 4 del Torneo 1', 1, true, '2024-06-10');
       ;`
     );
   }

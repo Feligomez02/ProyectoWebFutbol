@@ -112,7 +112,7 @@ const jugadores = sequelize.define(
       validate: {
         isDate: {
           args: true,
-          msg: "FechaCiudad debe ser tipo fecha",
+          msg: "FechaNacimiento debe ser tipo fecha",
         },
       }
     }      
