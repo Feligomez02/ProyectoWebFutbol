@@ -21,7 +21,7 @@ describe('POST /api/partidos', function () {
     it('debería crear un nuevo partido', async function () {
       const res = await request(app)
         .post('/api/partidos')
-        .send({ NombrePartido: 'PARTIDO DE PLAZA',FechaPartido:'2024-06-01', Activo: false });
+        .send({ NombrePartido: 'Partido de Plaza', FechaPartido:'2024-06-01', ActivoPartido: false });
   
       // Agregar un registro de depuración para ver el cuerpo de la respuesta
       if (res.statusCode !== 200) {
