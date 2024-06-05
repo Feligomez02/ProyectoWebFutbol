@@ -108,6 +108,39 @@ async function CrearBaseSiNoExiste() {
   }
 
 
+  existe = false;
+  sql =
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'estadios'";
+  res = await db.get(sql, []);
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE table estadios( 
+              IdEstadio INTEGER PRIMARY KEY AUTOINCREMENT
+            , NombreEstadio text NOT NULL 
+            , PartidoId integer NOT NULL
+            , ActivoEstadio boolean NOT NULL
+            , FechaEstadio date,
+            FOREIGN KEY (PartidoId) REFERENCES partidos(IdPartido)
+            );`
+    );
+    console.log("tabla estadios creada!");
+
+    await db.run(
+      `insert into estadios values
+        (1, 'Estadio Santiago Bernabéu', 1, true, '2024-06-05'),
+        (2, 'Camp Nou', 2, true, '2024-06-04'),
+        (3, 'Old Trafford', 3, false, '2024-06-03'),
+        (4, 'Anfield', 4, true, '2024-06-02'),
+        (5, 'San Siro', 5, false, '2024-06-01'),
+        (6, 'Signal Iduna Park', 6, true, '2024-05-31'),
+        (7, 'Allianz Arena', 7, true, '2024-05-30'),
+        (8, 'Estadio Azteca', 8, true, '2024-05-29'),
+        (9, 'Estadio Monumental', 9, false, '2024-05-28'),
+        (10, 'Wembley Stadium', 10, true, '2024-05-27')
+      ;`
+    );
+  }
 
   // cerrar la base
   db.close();

@@ -257,7 +257,72 @@ const arbitros = sequelize.define(
 
 );
 
+const estadios = sequelize.define(
+  "estadios",
+  {
+    IdEstadio: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    NombreEstadio: {
+      type: DataTypes.STRING(60),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "NombreEstadio es requerido",
+        },
+        len: {
+          args: [3, 60],
+          msg: "NombreEstadio debe ser tipo caracteres, entre 3 y 60 de longitud",
+        },
+      },
+    },
+    PartidoId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "PartidoId es requerido",
+        }
+      }
+    },
+    ActivoEstadio: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "ActivoEstadio es requerido",
+        },
+      },
+    },
+    FechaEstadio: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "FechaEstadio debe ser tipo fecha",
+        },
+      }
+    }      
+  },
+  {
+    // pasar a mayusculas
+    hooks: {
+      beforeValidate: function (estadios, options) {
+        if (typeof estadios.NombreEstadio === "string") {
+          estadios.NombreEstadio = estadios.NombreEstadio.toUpperCase().trim();
+        }
+      },
+    },
 
+    timestamps: false,
+  }
+);
 
 module.exports = {
   sequelize,
@@ -265,4 +330,5 @@ module.exports = {
   jugadores,
   partidos,
   arbitros,
+  estadios,
 };
