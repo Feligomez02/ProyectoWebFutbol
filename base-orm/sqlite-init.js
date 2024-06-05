@@ -91,6 +91,21 @@ async function CrearBaseSiNoExiste() {
   }
 
 
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'arbitros'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      "CREATE table arbitros( IdArbitro INTEGER PRIMARY KEY AUTOINCREMENT, NombreApellido text NOT NULL, FechaNac date, Activo boolean NOT NULL);"
+    );
+    console.log("tabla arbitros creada!");
+    await db.run(
+      "insert into arbitros values	(1, 'Fernando Rapalini', '1975-05-15', true), (2, 'Hector Baldassi', '1964-10-20', false), (3, 'Yael Falcon', '1982-03-28', true), (4, 'Hernan Mastrangelo', '1970-08-10', true), (5, 'Fernando Echenique', '1985-12-04', true), (6, 'Nestor Pitana', '1970-07-30', false), (7, 'Nicolas Lamolina', '1978-09-25', true), (8, 'Facundo Tello', '1989-02-18', true), (9, 'Pablo Lunatti', '1969-06-22', false), (10, 'Pablo Dovalo', '1981-11-12', true);"
+    );
+  }
 
 
 

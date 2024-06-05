@@ -14,6 +14,9 @@ app.use(jugadoresRouter);
 const partidosRouter = require("./routes/partidos");
 app.use(partidosRouter);
 
+const arbitrosRouter = require("./routes/arbitros");
+app.use(arbitrosRouter);
+
 
 // controlar ruta
 app.get("/", (req, res) => {

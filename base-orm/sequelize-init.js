@@ -192,6 +192,71 @@ const partidos = sequelize.define(
   }
 );
 
+// Definicion de modelo de datos 
+
+const arbitros = sequelize.define(
+  "arbitros",
+  {
+    IdArbitro: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    NombreApellido: {
+      // todo evitar que string autocomplete con espacios en blanco, debería ser varchar sin espacios
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Nombre es requerido",
+        },
+        len: {
+          args: [3, 30],
+          msg: "Nombre debe ser tipo caracteres, entre 3 y 30 de longitud",
+        },
+      },
+
+    },
+
+    FechaNac: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "Fecha debe ser tipo fecha",
+        },
+      },
+    },
+  
+  Activo: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        args: true,
+        msg: "Activo es requerido",
+      },
+    },
+  },
+  },
+
+  {
+    // pasar a mayusculas
+    hooks: {
+      beforeValidate: function (arbitros, options) {
+        if (typeof arbitros.NombreApellido === "string") {
+          arbitros.NombreApellido = arbitros.NombreApellido.toUpperCase().trim();
+        }
+      },
+    },
+
+    timestamps: false,
+  }
+
+);
+
 
 
 module.exports = {
@@ -199,4 +264,5 @@ module.exports = {
   equipos,
   jugadores,
   partidos,
+  arbitros,
 };
