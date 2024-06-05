@@ -28,7 +28,7 @@ async function CrearBaseSiNoExiste() {
   res = await db.get(
     "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'equipos'",
     []
-  );
+  ); 
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
@@ -141,6 +141,57 @@ async function CrearBaseSiNoExiste() {
       ;`
     );
   }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'torneos'",
+    []
+  ); 
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      "CREATE table torneos( IdTorneo INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL, FechaInicio date, Activo boolean NOT NULL);"
+    );
+    console.log("tabla torneos creada!");
+    await db.run(
+      "insert into torneos values	(1, 'Premier', '1901-05-25', true), (2, 'Ligue One', '1905-04-03', true), (3, 'Serie A', '1905-08-01', true), (4, 'La Liga', '1903-03-25', true), (5, 'Liga Argentina', '1908-04-01', true), (6, 'Eredivisie', '1910-01-01', true), (7, 'Libertadores', '1905-08-04', true), (8, 'Sudamericana', '1887-06-03', true), (9, 'Eurocopa', '1905-03-19', true), (10, 'Champions League', '1889-12-24', true);"
+    );
+  }
+
+  existe = false;
+  sql =
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'resultados'";
+  res = await db.get(sql, []);
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE table resultados( 
+              IdResultado INTEGER PRIMARY KEY AUTOINCREMENT
+            , Descripcion text NOT NULL 
+            , TorneoId integer NOT NULL
+            , Activo boolean NOT NULL
+            , FechaResultado date,
+            FOREIGN KEY (TorneoId) REFERENCES torneos(IdTorneo)
+            );`
+    );
+    console.log("tabla resultados creada!");
+
+    await db.run(
+      `insert into resultados values
+      (1, 'Resultado del partido 1 del Torneo 7', 7, '2024-06-01', true), 
+      (2, 'Resultado del partido 2 del Torneo 5', 5, '2024-06-02', true), 
+      (3, 'Resultado del partido 3 del Torneo 1', 1, '2024-06-03', false), 
+      (4, 'Resultado del partido 1 del Torneo 2', 2, '2024-06-04', true), 
+      (5, 'Resultado del partido 2 del Torneo 9', 9, '2024-06-05', false), 
+      (6, 'Resultado del partido 3 del Torneo 6', 6, '2024-06-06', true), 
+      (7, 'Resultado del partido 1 del Torneo 10', 10, '2024-06-07', true), 
+      (8, 'Resultado del partido 2 del Torneo 1', 1, '2024-06-08', false), 
+      (9, 'Resultado del partido 3 del Torneo 7', 7, '2024-06-09', true), 
+      (10, 'Resultado del partido 4 del Torneo 1', 1, '2024-06-10', true);
+      ;`
+    );
+  }
+
 
   // cerrar la base
   db.close();

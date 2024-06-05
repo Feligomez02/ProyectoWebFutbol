@@ -324,6 +324,133 @@ const estadios = sequelize.define(
   }
 );
 
+const torneos = sequelize.define(
+  "torneos",
+  {
+    IdTorneo: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    Nombre: {
+      // todo evitar que string autocomplete con espacios en blanco, debería ser varchar sin espacios
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Nombre es requerido",
+        },
+        len: {
+          args: [3, 30],
+          msg: "Nombre debe ser tipo caracteres, entre 3 y 30 de longitud",
+        },
+      },
+    },
+    FechaInicio: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "FechaInicio debe ser tipo fecha",
+        },
+      },
+    },
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Activo es requerido",
+        },
+      },
+    },
+  },
+  
+  {
+    // pasar a mayusculas
+    hooks: {
+      beforeValidate: function (torneos, options) {
+        if (typeof torneos.Nombre === "string") {
+          torneos.Nombre = torneos.Nombre.toUpperCase().trim();
+        }
+      },
+    },
+
+    timestamps: false,
+  }
+);
+
+
+const resultados = sequelize.define(
+  "resultados",
+  {
+    IdResultado: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    Descripcion: {
+      type: DataTypes.STRING(60),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Descripcion es requerido",
+        },
+        len: {
+          args: [3, 60],
+          msg: "Descripcion debe ser tipo caracteres, entre 3 y 60 de longitud",
+        },
+      },
+    },
+    TorneoId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "TorneoId es requerido",
+        }
+      }
+    },
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Activo es requerido",
+        },
+      },
+    },
+    FechaResultado: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "FechaResultado debe ser tipo fecha",
+        },
+      }
+    }      
+  },
+  {
+    // pasar a mayusculas
+    hooks: {
+      beforeValidate: function (resultados, options) {
+        if (typeof resultados.Descripcion === "string") {
+          resultados.Descripcion = resultados.Descripcion.toUpperCase().trim();
+        }
+      },
+    },
+
+    timestamps: false,
+  }
+);
+
 module.exports = {
   sequelize,
   equipos,
@@ -331,4 +458,8 @@ module.exports = {
   partidos,
   arbitros,
   estadios,
+  torneos,
+  resultados,
 };
+
+
