@@ -1,0 +1,21 @@
+
+  .tituloPagina {
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    text-shadow: 1px 1px 1px #ccc;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+body {
+  background-color: rgb(241, 243, 247);
+}
+
+.divBody {
+  background-color: white;
+  min-height: 75vh;
+  padding: 1rem;
+}
