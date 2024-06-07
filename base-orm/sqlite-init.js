@@ -107,6 +107,28 @@ async function CrearBaseSiNoExiste() {
     );
   }
 
+  existe = false;
+  sql =
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'designaciones'";
+  res = await db.get(sql, []);
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE table designaciones( 
+              IdDesignacion INTEGER PRIMARY KEY AUTOINCREMENT
+            , IdArbitro integer NOT NULL 
+            , Confirmada boolean NOT NULL
+            , FechaDesig date,
+            FOREIGN KEY (IdArbitro) REFERENCES arbitros(IdArbitro)
+            );`
+    );
+    console.log("tabla desginaciones creada!");
+
+    await db.run(
+      `insert into designaciones values (1, 3,  true, '2024-06-10'), (2, 5,  true, '2024-06-25'), (3, 5,  true, '2024-06-20'), (4, 7,  false, '2024-07-10'), (5, 1,  true, '2024-07-02'), (6, 4,  true, '2024-06-15'), (7, 10,  false, '2024-06-08'), (8, 8, true, '2024-07-05'), (9, 7, true, '2024-01-22'), (10, 1, true, '2024-06-18');`
+    );
+  }
+
 
   existe = false;
   sql =

@@ -257,6 +257,54 @@ const arbitros = sequelize.define(
 
 );
 
+const designaciones = sequelize.define(
+  "designaciones",
+  {
+    IdDesignacion: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    IdArbitro: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "ID del arbitro es requerido",
+        },
+      },
+    },
+    
+    Confirmada: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "La confirmacion es requerida",
+        },
+      },
+    },  
+    FechaDesig: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      validate: {
+        isDate: {
+          args: true,
+          msg: "Fecha Designacion debe ser tipo fecha",
+        },
+      }
+    }      
+  },
+
+  {
+    timestamps: false, 
+    tableName: 'designaciones',
+  }
+);
+
+
 const estadios = sequelize.define(
   "estadios",
   {
@@ -460,6 +508,7 @@ module.exports = {
   estadios,
   torneos,
   resultados,
+  designaciones,
 };
 
 
