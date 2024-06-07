@@ -20,7 +20,7 @@ function Jugadores() {
   const [Nombre, setNombre] = useState("");
   const [Activo, setActivo] = useState("");
 
-  const [Items, setItems] = useState(null);
+  const [Items, setItems] = useState([]);  // Inicializar como array vacío
   const [Item, setItem] = useState(null); // usado en BuscarporId (Modificar, Consultar)
   const [RegistrosTotal, setRegistrosTotal] = useState(0);
   const [Pagina, setPagina] = useState(1);
@@ -37,109 +37,132 @@ function Jugadores() {
     BuscarEquipos();
   }, []);
 
+  
+
   useEffect(() => {
-    if (AccionABMC === "L") {
-      Buscar(Pagina);
-    }
-  }, [AccionABMC, Pagina]);
+    // Log Items to console whenever it changes
+    console.log("Items:", Items);
+  }, [Items]);
 
   async function Buscar(_pagina) {
     if (_pagina && _pagina !== Pagina) {
       setPagina(_pagina);
-    }
-    // OJO Pagina (y cualquier estado...) se actualiza para el proximo render, para buscar usamos el parametro _pagina
-    else {
+    } else {
       _pagina = Pagina;
     }
     modalDialogService.BloquearPantalla(true);
     const data = await jugadoresService.Buscar(Nombre, Activo, _pagina);
-    console.log("Datos recibidos de jugadoresService.Buscar:", data);
     modalDialogService.BloquearPantalla(false);
+    console.log("jugadoresService devolvio: ", data);
+    
+    // Check if data is null or undefined
+    if (data) {
+      if (Array.isArray(data)) {
+        // Assuming data itself is an array of items
+        setItems(data);
+        setRegistrosTotal(data.length);
+        
+        // Generate array of pages to show in the paginator
+        const arrPaginas = [];
+        for (let i = 1; i <= Math.ceil(data.length / 10); i++) {
+          arrPaginas.push(i);
+        }
+        setPaginas(arrPaginas);
+      } else if (data.Items) {
+        // If data has an Items property
+        setItems(data.Items);
+        setRegistrosTotal(data.RegistrosTotal);
 
-    setItems(data.Items);
-    setRegistrosTotal(data.RegistrosTotal);
-
-
-    //generar array de las paginas para mostrar en select del paginador
-    const arrPaginas = [];
-    for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
-      arrPaginas.push(i);
+        // Generate array of pages to show in the paginator
+        const arrPaginas = [];
+        for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
+          arrPaginas.push(i);
+        }
+        setPaginas(arrPaginas);
+      } else {
+        console.error("Unexpected data structure returned from jugadoresService.Buscar");
+      }
+    } else {
+      console.error("No data returned from jugadoresService.Buscar");
     }
-    setPaginas(arrPaginas);
-    console.log("Paginas:", arrPaginas);
   }
-
 
   async function BuscarPorId(item, accionABMC) {
     const data = await jugadoresService.BuscarPorId(item);
-    console.log("Datos recibidos de jugadoresService.BuscarPorId:", data);
     setItem(data);
     setAccionABMC(accionABMC);
   }
+  
 
   function Consultar(item) {
-    BuscarPorId(item, "C"); 
+    BuscarPorId(item, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
   }
-  
   function Modificar(item) {
     if (!item.Activo) {
-        modalDialogService.Alert("No puede modificarse un registro Inactivo.");
+      //alert("No puede modificarse un registro Inactivo.");
+      modalDialogService.Alert("No puede modificarse un registro Inactivo.");
       return;
     }
-    BuscarPorId(item, "M"); 
+    BuscarPorId(item, "M"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
   }
 
   async function Agregar() {
     setAccionABMC("A");
     setItem({
-      IdJugador: 0,
-      Nombre: '', 
-      IdEquipo: '',
-      Activo: '',
-      FechaNacimiento: moment(new Date()).format("YYYY-MM-DD"),
-    });
-    alert("preparando el Alta...");
+        IdJugador: 0,
+        Nombre: '',
+        IdEquipo: '',
+        Activo: true,
+        FechaNacimiento: moment(new Date()).format("YYYY-MM-DD"),
+      });
+    //modalDialogService.Alert("preparando el Alta...");
   }
 
   function Imprimir() {
-    alert("En desarrollo...");
+    modalDialogService.Alert("En desarrollo...");
   }
 
   async function ActivarDesactivar(item) {
     modalDialogService.Confirm(
-        "Esta seguro que quiere " +
-          (item.Activo ? "desactivar" : "activar") +
-          " el registro?",
-        undefined,
-        undefined,
-        undefined,
-        async () => {
-          await jugadoresService.ActivarDesactivar(item);
-          await Buscar();
-        }
-      );
-  
+      "Esta seguro que quiere " +
+        (item.Activo ? "desactivar" : "activar") +
+        " el registro?",
+      undefined,
+      undefined,
+      undefined,
+      async () => {
+        await jugadoresService.ActivarDesactivar(item);
+        await Buscar();
+      }
+    );
+
   }
+  
+  
 
   async function Grabar(item) {
     // agregar o modificar
-    try {
+    try
+    {
       await jugadoresService.Grabar(item);
-    } catch (error) {
+    }
+    catch (error)
+    {
       modalDialogService.Alert(error?.response?.data?.message ?? error.toString())
       return;
     }
     await Buscar();
     Volver();
-
-    setTimeout(() => {
-      alert(
+  
+    //setTimeout(() => {
+      modalDialogService.Alert(
         "Registro " +
-        (AccionABMC === "A" ? "agregado" : "modificado") +
-        " correctamente."
+          (AccionABMC === "A" ? "agregado" : "modificado") +
+          " correctamente."
       );
-    }, 0);
+    //}, 0);
   }
+  
 
   // Volver/Cancelar desde Agregar/Modificar/Consultar
   function Volver() {
@@ -164,7 +187,7 @@ function Jugadores() {
       )}
 
       {/* Tabla de resutados de busqueda y Paginador */}
-      {AccionABMC === "L" && Items && Items.length > 0 && (
+      {AccionABMC === "L" && Items.length > 0 && (
         <JugadoresListado
           {...{
             Items,
@@ -180,7 +203,7 @@ function Jugadores() {
         />
       )}
 
-      {AccionABMC === "L" && Items && Items.length === 0 && (
+      {AccionABMC === "L" && Items.length === 0 && (
         <div className="alert alert-info mensajesAlert">
           <i className="fa fa-exclamation-sign"></i>
           No se encontraron registros...
@@ -196,5 +219,4 @@ function Jugadores() {
     </div>
   );
 }
-
 export { Jugadores };

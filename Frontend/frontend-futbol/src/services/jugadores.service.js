@@ -7,7 +7,7 @@ const urlResource = "http://localhost:3000/api/jugadores";
 
 async function Buscar(Nombre, Activo, Pagina) {
   const resp = await httpService.get(urlResource, {
-    params: { Nombre, Activo, Pagina },
+    params: { Nombre , Activo, Pagina },
   });
   return resp.data;
 }

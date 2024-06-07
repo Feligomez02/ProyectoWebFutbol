@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Make sure axios is imported
 
 function Equipos() {
-  const tituloPagina = 'Equipos';
+  const tituloPagina = "Equipos";
   const [equipos, setEquipos] = useState([]);
   const urlResource = "http://localhost:3000/api/equipos";
 
