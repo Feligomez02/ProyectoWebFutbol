@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 
 // crear servidor
 const app = express();
 app.use(express.json());
 require("./base-orm/sqlite-init.js");  // crear base si no existe
+app.use(cors());
 
 const equiposRouter = require("./routes/equipos");
 app.use(equiposRouter);

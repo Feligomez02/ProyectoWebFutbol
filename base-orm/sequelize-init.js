@@ -86,7 +86,7 @@ const jugadores = sequelize.define(
         },
       },
     },
-    EquipoId: {
+    IdEquipo: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {

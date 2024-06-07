@@ -1,12 +1,29 @@
 import "./App.css";
-import { Equipos } from "./components/Equipos";
-
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {Inicio} from "./components/Inicio";
+import {Equipos} from "./components/Equipos";
+import {Menu} from "./components/Menu";
+import {Footer} from "./components/Footer";
+import { Jugadores } from "./components/jugadores/Jugadores";
+import { ModalDialog } from "./components/ModalDialog";
 
 function App() {
   return (
-     <div classname="divBody">
-      <Equipos />
-     </div>
+    <>
+      <BrowserRouter>
+        <ModalDialog />
+        <Menu />
+        <div className="divBody">
+            <Routes>
+              <Route path="/inicio" element={<Inicio />} />
+              <Route path="/equipos" element={<Equipos />} />
+              <Route path="*" element={<Navigate to="/Inicio" replace />} />
+              <Route path="/jugadores" element={<Jugadores />} />
+            </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </>
   );
 }
 export default App;

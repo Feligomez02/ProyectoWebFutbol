@@ -50,10 +50,10 @@ async function CrearBaseSiNoExiste() {
       `CREATE table jugadores( 
               IdJugador INTEGER PRIMARY KEY AUTOINCREMENT
             , Nombre text NOT NULL 
-            , EquipoId integer NOT NULL
+            , IdEquipo integer NOT NULL
             , Activo boolean NOT NULL
             , FechaNacimiento date,
-            FOREIGN KEY (EquipoId) REFERENCES equipos(IdEquipo)
+            FOREIGN KEY (IdEquipo) REFERENCES equipos(IdEquipo)
             );`
     );
     console.log("tabla jugadores creada!");

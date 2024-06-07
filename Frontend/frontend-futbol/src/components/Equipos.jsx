@@ -1,29 +1,53 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Make sure axios is imported
+
 function Equipos() {
-    return (
-      <>
-        <div className="tituloPagina">Equipos</div>
-        <div className="table-responsive">
-           <table className="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style={{ width: "40%" }}>IdEquipo</th>
-                <th style={{ width: "60%" }}>Nombre</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Accesorios</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Audio</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </>
-    );
+  const tituloPagina = 'Equipos';
+  const [equipos, setEquipos] = useState([]);
+  const urlResource = "http://localhost:3000/api/equipos";
+
+  // Function to fetch the data
+  async function BuscarEquipos() {
+    try {
+      const resp = await axios.get(urlResource);
+      setEquipos(resp.data); // Set the fetched data to state
+    } catch (error) {
+      console.error('Error fetching the equipos:', error);
+    }
   }
-  export { Equipos };
-  
+
+  // useEffect to fetch the data once the component mounts
+  useEffect(() => {
+    BuscarEquipos();
+  }, []);
+
+  return (
+    <div>
+      <div className="tituloPagina">{tituloPagina}</div>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style={{ width: "40%" }}>IdEquipo</th>
+            <th style={{ width: "60%" }}>Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {equipos.length > 0 ? (
+            equipos.map((equipo) => (
+              <tr key={equipo.IdEquipo}>
+                <td>{equipo.IdEquipo}</td>
+                <td>{equipo.Nombre}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2">Loading...</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export { Equipos };

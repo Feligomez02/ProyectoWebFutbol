@@ -6,7 +6,7 @@ const { ValidationError } = require("sequelize");
 
 router.get("/api/jugadores", async function (req, res, next) {
   let data = await db.jugadores.findAll({
-    attributes: ["IdJugador", "Nombre", "EquipoId", "Activo", "FechaNacimiento"],
+    attributes: ["IdJugador", "Nombre", "IdEquipo", "Activo", "FechaNacimiento"],
   });
   res.json(data);
 });
