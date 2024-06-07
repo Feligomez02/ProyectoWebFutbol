@@ -28,6 +28,10 @@ app.use(torneosRouter);
 const resultadosRouter = require("./routes/resultados");
 app.use(resultadosRouter);
 
+const designacionesRouter = require("./routes/designaciones");
+app.use(designacionesRouter);
+
+
 // controlar ruta
 app.get("/", (req, res) => {
   res.send("Backend inicial TP2");
