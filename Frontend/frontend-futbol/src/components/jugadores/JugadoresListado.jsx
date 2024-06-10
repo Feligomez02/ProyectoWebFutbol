@@ -12,6 +12,12 @@ export default function JugadoresListado({
   Paginas,
   Buscar,
 }) {
+  // Calcular el índice del primer elemento de la página actual
+  const startIndex = (Pagina - 1) * 10;
+
+  // Crear un nuevo array con los jugadores de la página actual
+  const jugadoresPaginaActual = Items.slice(startIndex, startIndex + 10);
+
   return (
     <div className="table-responsive">
       <table className="table table-hover table-sm table-bordered table-striped">
@@ -25,47 +31,46 @@ export default function JugadoresListado({
           </tr>
         </thead>
         <tbody>
-          {Items &&
-            Items.map((Item) => (
-              <tr key={Item.IdJugador}>
-                <td>{Item.Nombre}</td>
-                <td className="text-end">{Item.IdEquipo}</td>
-                <td>{Item.Activo ? 'SI' : 'NO'}</td>
-                <td className="text-end">
-                  {moment(Item.FechaNacimiento).format("DD/MM/YYYY")}
-                </td>
-                <td className="text-center text-nowrap">
-                  <button
-                    className="btn btn-sm btn-outline-primary"
-                    title="Consultar"
-                    onClick={() => Consultar(Item)}
-                  >
-                    <i className="fa fa-eye"></i>
-                  </button>
-                  <button
-                    className="btn btn-sm btn-outline-primary"
-                    title="Modificar"
-                    onClick={() => Modificar(Item)}
-                  >
-                    <i className="fa fa-pencil"></i>
-                  </button>
-                  <button
-                    className={
-                      "btn btn-sm " +
-                      (Item.Activo
-                        ? "btn-outline-danger"
-                        : "btn-outline-success")
-                    }
-                    title={Item.Activo ? "Desactivar" : "Activar"}
-                    onClick={() => ActivarDesactivar(Item)}
-                  >
-                    <i
-                      className={"fa fa-" + (Item.Activo ? "times" : "check")}
-                    ></i>
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {jugadoresPaginaActual.map((Item, index) => (
+            <tr key={index}>
+              <td>{Item.Nombre}</td>
+              <td className="text-center">{Item.IdEquipo}</td>
+              <td className="text-center">{Item.Activo ? "SI" : "NO"}</td>
+              <td className="text-center">
+                {moment(Item.FechaNacimiento).format("YYYY/MM/DD")}
+              </td>
+              <td className="text-center text-nowrap">
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                  title="Consultar"
+                  onClick={() => Consultar(Item)}
+                >
+                  <i className="fa fa-eye"></i>
+                </button>
+                <button
+                  className="btn btn-sm btn-outline-primary"
+                  title="Modificar"
+                  onClick={() => Modificar(Item)}
+                >
+                  <i className="fa fa-pencil"></i>
+                </button>
+                <button
+                  className={
+                    "btn btn-sm " +
+                    (Item.Activo
+                      ? "btn-outline-danger"
+                      : "btn-outline-success")
+                  }
+                  title={Item.Activo ? "Desactivar" : "Activar"}
+                  onClick={() => ActivarDesactivar(Item)}
+                >
+                  <i
+                    className={"fa fa-" + (Item.Activo ? "times" : "check")}
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -93,7 +98,10 @@ export default function JugadoresListado({
           </div>
 
           <div className="col">
-            <button className="btn btn-primary float-end" onClick={() => Imprimir()}>
+            <button
+              className="btn btn-primary float-end"
+              onClick={() => Imprimir()}
+            >
               <i className="fa fa-print"></i>Imprimir
             </button>
           </div>

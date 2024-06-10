@@ -6,6 +6,9 @@ import JugadoresRegistro from "./JugadoresRegistro";
 import { equiposService } from "../../services/equipos.service";
 import { jugadoresService } from "../../services/jugadores.service";
 import modalDialogService from "../../services/modalDialog.service";
+import { v4 as uuidv4 } from "uuid";
+import { set } from "react-hook-form";
+
 
 function Jugadores() {
   const TituloAccionABMC = {
@@ -37,12 +40,8 @@ function Jugadores() {
     BuscarEquipos();
   }, []);
 
+ 
   
-
-  useEffect(() => {
-    // Log Items to console whenever it changes
-    console.log("Items:", Items);
-  }, [Items]);
 
   async function Buscar(_pagina) {
     if (_pagina && _pagina !== Pagina) {
@@ -68,23 +67,11 @@ function Jugadores() {
           arrPaginas.push(i);
         }
         setPaginas(arrPaginas);
-      } else if (data.Items) {
-        // If data has an Items property
-        setItems(data.Items);
-        setRegistrosTotal(data.RegistrosTotal);
-
-        // Generate array of pages to show in the paginator
-        const arrPaginas = [];
-        for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
-          arrPaginas.push(i);
-        }
-        setPaginas(arrPaginas);
-      } else {
-        console.error("Unexpected data structure returned from jugadoresService.Buscar");
       }
-    } else {
+    else {
       console.error("No data returned from jugadoresService.Buscar");
     }
+  }
   }
 
   async function BuscarPorId(item, accionABMC) {
@@ -106,14 +93,25 @@ function Jugadores() {
     BuscarPorId(item, "M"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
   }
 
+  function generateRandomId() {
+    return Math.floor(Math.random() * (1000 - 11 + 1)) + 11;
+  }
+
+  function generateRandomDate() {
+    const start = new Date(1970, 0, 1); // 1st Jan 1970
+    const end = new Date(); // Current date
+    const randomDate = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    return moment.utc(randomDate).format("YYYY-MM-DD");
+  }
+
   async function Agregar() {
     setAccionABMC("A");
     setItem({
-        IdJugador: 0,
+        IdJugador: generateRandomId(),
         Nombre: '',
         IdEquipo: '',
         Activo: true,
-        FechaNacimiento: moment(new Date()).format("YYYY-MM-DD"),
+        FechaNacimiento: generateRandomDate(),
       });
     //modalDialogService.Alert("preparando el Alta...");
   }
@@ -123,19 +121,27 @@ function Jugadores() {
   }
 
   async function ActivarDesactivar(item) {
-    modalDialogService.Confirm(
-      "Esta seguro que quiere " +
-        (item.Activo ? "desactivar" : "activar") +
-        " el registro?",
-      undefined,
-      undefined,
-      undefined,
-      async () => {
-        await jugadoresService.ActivarDesactivar(item);
-        await Buscar();
-      }
-    );
+    try {
+      // Llamar a la función ActivarDesactivar del servicio de jugadores
+      await jugadoresService.ActivarDesactivar(item);
+      
+      // Actualizar el estado local si es necesario
+      // Por ejemplo, si deseas eliminar el jugador desactivado del estado local
+      //setItems(items.filter(jugador => jugador.IdJugador !== item.IdJugador));
+      
+      // Mostrar un mensaje de éxito y esperar la respuesta del usuario
+      await new Promise((resolve) => {
+        modalDialogService.Alert("Jugador activado/desactivado correctamente.", resolve);
+    });
 
+    // Actualizar la lista de jugadores después de que el usuario haya aceptado el mensaje
+    Buscar();
+    } catch (error) {
+      // Manejar errores si la solicitud falla
+      console.error("Error al activar/desactivar jugador:", error);
+      // Mostrar un mensaje de error
+      modalDialogService.Alert("Error al activar/desactivar jugador. Por favor, inténtalo de nuevo más tarde.");
+    }
   }
   
   
@@ -151,6 +157,7 @@ function Jugadores() {
       modalDialogService.Alert(error?.response?.data?.message ?? error.toString())
       return;
     }
+    console.log("Grabar item: ", item);
     await Buscar();
     Volver();
   

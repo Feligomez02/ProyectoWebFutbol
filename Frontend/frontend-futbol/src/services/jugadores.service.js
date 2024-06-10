@@ -25,7 +25,7 @@ async function ActivarDesactivar(item) {
 
 
 async function Grabar(item) {
-  if (item.IdJugador === 0) {
+  if (item.IdJugador !== null && item.IdJugador !== 0) {
     await httpService.post(urlResource, item);
   } else {
     await httpService.put(urlResource + "/" + item.IdJugador, item);

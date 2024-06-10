@@ -12,7 +12,8 @@
     "react-hook-form": "^7.51.5",
     "react-router-dom": "^6.23.1",
     "sequelize": "^6.37.3",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "uuid": "^10.0.0"
   },
   "name": "tp2",
   "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
