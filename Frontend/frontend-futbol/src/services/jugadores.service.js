@@ -25,10 +25,25 @@ async function ActivarDesactivar(item) {
 
 
 async function Grabar(item) {
-  if (item.IdJugador !== null && item.IdJugador !== 0) {
-    await httpService.post(urlResource, item);
-  } else {
-    await httpService.put(urlResource + "/" + item.IdJugador, item);
+  try {
+    const response = await httpService.get(urlResource + "/" + item.IdJugador);
+    let itemExists = false;
+    
+    for (let i = 0; i < response.data.Items.length; i++) {
+      if (response.data.Items[i].IdJugador === item.IdJugador) {
+        console.log("Existing IdJugador found: ", response.data.Items[i].IdJugador);
+        await httpService.put(urlResource + "/" + item.IdJugador, item);
+        itemExists = true;
+        break; // Exit the loop since we found the item and updated it
+      }
+    }
+    
+    if (!itemExists) {
+      console.log("New IdJugador, creating: ", item.IdJugador);
+      await httpService.post(urlResource, item);
+    }
+  } catch (error) {
+    console.error("Error occurred while processing the item:", error);
   }
 }
 

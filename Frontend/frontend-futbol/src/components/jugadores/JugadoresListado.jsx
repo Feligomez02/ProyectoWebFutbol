@@ -12,11 +12,6 @@ export default function JugadoresListado({
   Paginas,
   Buscar,
 }) {
-  // Calcular el índice del primer elemento de la página actual
-  const startIndex = (Pagina - 1) * 10;
-
-  // Crear un nuevo array con los jugadores de la página actual
-  const jugadoresPaginaActual = Items.slice(startIndex, startIndex + 10);
 
   return (
     <div className="table-responsive">
@@ -31,8 +26,8 @@ export default function JugadoresListado({
           </tr>
         </thead>
         <tbody>
-          {jugadoresPaginaActual.map((Item, index) => (
-            <tr key={index}>
+          {Items && Items.map((Item) => (
+            <tr key={Item.IdJugador}>
               <td>{Item.Nombre}</td>
               <td className="text-center">{Item.IdEquipo}</td>
               <td className="text-center">{Item.Activo ? "SI" : "NO"}</td>

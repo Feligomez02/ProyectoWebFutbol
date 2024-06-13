@@ -5,14 +5,35 @@ const db = require("../base-orm/sequelize-init");
 const { ValidationError } = require("sequelize");
 
 router.get("/api/jugadores", async function (req, res, next) {
-  let data = await db.jugadores.findAll({
-    attributes: ["IdJugador", "Nombre", "IdEquipo", "Activo", "FechaNacimiento"],
-  });
-  res.json(data);
-});
-
+  try {
+    let where = {};
+       
+    const Pagina = req.query.Pagina ?? 1;
+    const TamañoPagina = 10;    
+    const { count, rows } = await db.jugadores.findAndCountAll({
+        attributes: [
+          "IdJugador",
+          "Nombre",
+          "IdEquipo",
+          "Activo",
+          "FechaNacimiento",
+        ],
+        order: [["IdJugador", "ASC"]],
+        where,
+        offset: (Pagina - 1) * TamañoPagina,
+        limit: TamañoPagina,
+      });
+    
+      return res.json({ Items: rows, RegistrosTotal: count });  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los jugadores' });
+      }
+    })
 router.get("/api/jugadores/:id", async function (req, res, next) {
   let data = await db.jugadores.findByPk(req.params.id);
+  if (data === null) {
+    res.status(404).json({ error: "No se encuentra el registro" });
+    return;
+  }
   res.json(data);
 });
 

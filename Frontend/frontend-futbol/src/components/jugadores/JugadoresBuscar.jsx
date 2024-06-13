@@ -2,7 +2,7 @@ import React from "react";
 export default function JugadoresBuscar ({Nombre, setNombre, Activo, setActivo, Buscar, Agregar}) {
 
     return (
-    <form name="FormBusqueda">
+    <form>
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-4 col-md-2">
@@ -14,7 +14,7 @@ export default function JugadoresBuscar ({Nombre, setNombre, Activo, setActivo, 
               className="form-control"
               onChange={(e) => setNombre(e.target.value)}
               value={Nombre}
-              maxLength="55"
+              maxLength="60"
               autoFocus
             />
           </div>
