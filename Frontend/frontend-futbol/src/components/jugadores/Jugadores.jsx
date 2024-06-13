@@ -94,7 +94,7 @@ function Jugadores() {
         Nombre: '',
         IdEquipo: '',
         Activo: true,
-        FechaNacimiento: moment(new Date()).format("YYYY-MM-DD"),
+        FechaNacimiento: moment().format("YYYY-MM-DD"),
       });
     //modalDialogService.Alert("preparando el Alta...");
   }

@@ -32,7 +32,7 @@ export default function JugadoresListado({
               <td className="text-center">{Item.IdEquipo}</td>
               <td className="text-center">{Item.Activo ? "SI" : "NO"}</td>
               <td className="text-center">
-                {moment(Item.FechaNacimiento).format("YYYY/MM/DD")}
+                {moment(Item.FechaNacimiento).format("DD/MM/YYYY")}
               </td>
               <td className="text-center text-nowrap">
                 <button

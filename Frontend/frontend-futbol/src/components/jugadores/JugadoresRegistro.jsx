@@ -1,4 +1,4 @@
-
+import moment from "moment";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -117,7 +117,7 @@ export default function JugadoresRegistro({
             <input
                 type="date"
                 {...register("FechaNacimiento", {
-                    required: { value: true, message: "Fecha de Nacimiento es requerido" }
+                    required: { value: true, message: "Fecha de Nacimiento es requerido" },
                 })}
                 className={
                     "form-control " + (errors?.FechaNacimiento ? "is-invalid" : "")
