@@ -33,7 +33,7 @@ function Designaciones() {
   // cargar al "montar" el componente, solo la primera vez (por la dependencia [])
   useEffect(() => {
     async function BuscarArbitros() {
-      let data = await equiposService.Buscar();
+      let data = await arbitrosService.Buscar();
       setArbitros(data);
     }
     BuscarArbitros();

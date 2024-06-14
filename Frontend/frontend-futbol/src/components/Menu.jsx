@@ -47,6 +47,11 @@ function Menu() {
               Arbitros
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/designaciones">
+              Designaciones
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
