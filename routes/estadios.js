@@ -1,19 +1,55 @@
 const express = require("express");
 const router = express.Router();
-
+const { Op} = require("sequelize");
 const db = require("../base-orm/sequelize-init");
 const { ValidationError } = require("sequelize");
 
 router.get("/api/estadios", async function (req, res, next) {
-  let data = await db.estadios.findAll({
-    attributes: ["IdEstadio", "NombreEstadio", "PartidoId", "ActivoEstadio", "FechaEstadio"],
-  });
-  res.json(data);
-});
+  // #swagger.tags = ['Articulos']
+  // #swagger.summary = 'obtiene todos los Articulos'
+  // consulta de artículos con filtros y paginacion
 
+  let where = {};
+  if (req.query.Nombre != undefined && req.query.Nombre !== "") {
+    where.Nombre = {
+      [Op.like]: "%" + req.query.Nombre + "%",
+    };
+  }
+  if (req.query.Activo != undefined && req.query.Activo !== "") {
+    // true o false en el modelo, en base de datos es 1 o 0
+    // convertir el string a booleano
+    where.Activo = req.query.Activo === "true";
+  }
+  const Pagina = req.query.Pagina ?? 1;
+  const TamañoPagina = 10;
+  const { count, rows } = await db.estadios.findAndCountAll({
+    attributes: [
+      "IdEstadio",
+      "NombreEstadio",
+      "PartidoId",
+      "ActivoEstadio",
+      "FechaEstadio",
+    ],
+    order: [["NombreEstadio", "ASC"]],
+    where,
+    offset: (Pagina - 1) * TamañoPagina,
+    limit: TamañoPagina,
+  });
+
+  return res.json({ Items: rows, RegistrosTotal: count });
+});
 router.get("/api/estadios/:id", async function (req, res, next) {
-  let data = await db.estadios.findByPk(req.params.id);
-  res.json(data);
+  let items = await db.estadios.findOne({
+    attributes: [
+      "IdEstadio",
+      "NombreEstadio",
+      "PartidoId",
+      "ActivoEstadio",
+      "FechaEstadio"
+    ],
+    where: { IdEstadio: req.params.id },
+  });
+  res.json(items);
 });
 
 router.post("/api/estadios/", async (req, res) => {
@@ -48,15 +84,39 @@ router.put("/api/estadios/:id", async (req, res) => {
 });
 
 router.delete("/api/estadios/:id", async (req, res) => {
-  try {
-    let data = await db.estadios.destroy({
+  // #swagger.tags = ['Articulos']
+  // #swagger.summary = 'elimina un Articulo'
+  // #swagger.parameters['id'] = { description: 'identificador del Articulo..' }
+
+  let bajaFisica = false;
+
+  if (bajaFisica) {
+    // baja fisica
+    let filasBorradas = await db.estadios.destroy({
       where: { IdEstadio: req.params.id },
     });
-    res.json(data);
-  } catch (error) {
-    res.status(500).json(error);
+    if (filasBorradas == 1) res.sendStatus(200);
+    else res.sendStatus(404);
+  } else {
+    // baja lógica
+    try {
+      let data = await db.sequelize.query(
+        "UPDATE estadios SET Activo = case when Activo = 1 then 0 else 1 end WHERE IdEstadio = :IdEstadio",
+        {
+          replacements: { IdEstadio: +req.params.id },
+        }
+      );
+      res.sendStatus(200);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        // si son errores de validación, los devolvemos
+        const messages = err.errors.map((x) => x.message);
+        res.status(400).json(messages);
+      } else {
+        // si son errores desconocidos, los dejamos que los controle el middleware de errores
+        throw err;
+      }
+    }
   }
 });
-
-
 module.exports = router;
