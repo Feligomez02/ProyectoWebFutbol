@@ -275,6 +275,24 @@ const designaciones = sequelize.define(
         },
       },
     },
+
+    Descripcion: {
+      // todo evitar que string autocomplete con espacios en blanco, debería ser varchar sin espacios
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Descripcion es requerida",
+        },
+        len: {
+          args: [3, 50],
+          msg: "Descripcion debe ser tipo caracteres, entre 3 y 50 de longitud",
+        },
+      },
+
+    },
+
     
     Confirmada: {
       type: DataTypes.BOOLEAN,
