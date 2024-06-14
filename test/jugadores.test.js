@@ -4,8 +4,21 @@ const app = require('../index.js');
 describe('GET /api/jugadores', function () {
   it('debería obtener todas los jugadores', async function () {
     const res = await request(app).get('/api/jugadores');
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      expect.objectContaining({
+        Items: expect.arrayContaining([
+          expect.objectContaining({
+            IdJugador: expect.any(Number),
+            Nombre: expect.any(String),
+            IdEquipo: expect.any(Number),
+            FechaNacimiento: expect.any(String),
+            Activo: expect.any(Boolean),
+          }),
+        ]),
+        RegistrosTotal: expect.any(Number),
+      })
+    );
   });
 });
 
