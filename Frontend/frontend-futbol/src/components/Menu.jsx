@@ -35,6 +35,11 @@ function Menu() {
                 Jugadores
                 </NavLink>
             </li>
+            <li className="nav-item">
+                <NavLink className="nav-link" to="/arbitros">
+                Arbitros
+                </NavLink>
+            </li>
         </ul>
       </div>
     </nav>

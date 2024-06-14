@@ -12,9 +12,14 @@ function Inicio() {
       <p>
         Frontend: Single Page Application, HTML, CSS, Bootstrap, Javascript, NodeJs y React.
       </p>
-      <Link to="/equipos" className="btn btn-primary">
+      <Link to="/equipos" className="btn btn-primary" style={{ marginRight: '20px' }}>
         <i className="fa fa-search"> </i>
         Ver Equipos
+      </Link>
+
+      <Link to="/arbitros" className="btn btn-primary" style={{ marginRight: '20px' }}>
+        <i className="fa fa-search"> </i>
+        Ver Arbitros
       </Link>
     </div>
   );
