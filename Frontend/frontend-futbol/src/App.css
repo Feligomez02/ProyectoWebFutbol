@@ -13,10 +13,8 @@
   
   /* pie de la pagina */
   footer {
-    margin: 0 auto;
-    text-align: center;
     padding: 1rem;
-    background-color: #131413;
+    background-color: #313231;
     color: white;
     bottom: 0;
     left: 0;
