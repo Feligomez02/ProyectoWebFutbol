@@ -103,7 +103,7 @@ async function CrearBaseSiNoExiste() {
     );
     console.log("tabla arbitros creada!");
     await db.run(
-      "insert into arbitros values	(1, 'Fernando Rapalini', '1975-05-15', true), (2, 'Hector Baldassi', '1964-10-20', false), (3, 'Yael Falcon', '1982-03-28', true), (4, 'Hernan Mastrangelo', '1970-08-10', true), (5, 'Fernando Echenique', '1985-12-04', true), (6, 'Nestor Pitana', '1970-07-30', false), (7, 'Nicolas Lamolina', '1978-09-25', true), (8, 'Facundo Tello', '1989-02-18', true), (9, 'Pablo Lunatti', '1969-06-22', false), (10, 'Pablo Dovalo', '1981-11-12', true);"
+      "insert into arbitros values	(1, 'Fernando Rapalini', '1975-05-15', true), (2, 'Hector Baldassi', '1964-10-20', false), (3, 'Yael Falcon Perez', '1982-03-28', true), (4, 'Hernan Mastrangelo', '1970-08-10', true), (5, 'Fernando Echenique', '1985-12-04', true), (6, 'Nestor Pitana', '1970-07-30', false), (7, 'Nicolas Lamolina', '1978-09-25', true), (8, 'Facundo Tello', '1989-02-18', true), (9, 'Pablo Lunatti', '1969-06-22', false), (10, 'Pablo Dovalo', '1981-11-12', true);"
     );
   }
 
@@ -117,6 +117,7 @@ async function CrearBaseSiNoExiste() {
       `CREATE table designaciones( 
               IdDesignacion INTEGER PRIMARY KEY AUTOINCREMENT
             , IdArbitro integer NOT NULL 
+            , Descripcion string NOT NULL
             , Confirmada boolean NOT NULL
             , FechaDesig date,
             FOREIGN KEY (IdArbitro) REFERENCES arbitros(IdArbitro)
@@ -125,7 +126,17 @@ async function CrearBaseSiNoExiste() {
     console.log("tabla desginaciones creada!");
 
     await db.run(
-      `insert into designaciones values (1, 3,  true, '2024-06-10'), (2, 5,  true, '2024-06-25'), (3, 5,  true, '2024-06-20'), (4, 7,  false, '2024-07-10'), (5, 1,  true, '2024-07-02'), (6, 4,  true, '2024-06-15'), (7, 10,  false, '2024-06-08'), (8, 8, true, '2024-07-05'), (9, 7, true, '2024-01-22'), (10, 1, true, '2024-06-18');`
+      `insert into designaciones values 
+      (1, 3, 'Yael Falcon Perez Dirige el 10 de Junio de 2024' , true, '2024-06-10'),
+      (2, 5, 'Fernando Echenique Dirige el 25 de Junio de 2024' , true, '2024-06-25'),
+      (3, 5, 'Fernando Echenique Dirige el 20 de Junio de 2024' , true, '2024-06-20'),
+      (4, 7, 'Nicolas Lamolina Dirige el 10 de Julio de 2024' , false, '2024-07-10'),
+      (5, 1, 'Fernando Rapalini Dirige el 2 de Julio de 2024' , true, '2024-07-02'),
+      (6, 4, 'Hernan Mastrangelo Dirige el 15 de Junio de 2024' , true, '2024-06-15'),
+      (7, 10, 'Pablo Dovalo Dirige el 8 de Junio de 2024' , false, '2024-06-08'),
+      (8, 8, 'Facundo Tello Dirige el 5 de Julio de 2024' , true, '2024-07-05'),
+      (9, 7, 'Nicolas Lamolina Dirige el 22 de Enero de 2024' , true, '2024-01-22'),
+      (10, 1, 'Fernando Rapalini Dirige el 18 de Junio de 2024' , true, '2024-06-18');`
     );
   }
 

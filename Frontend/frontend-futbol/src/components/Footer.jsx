@@ -8,7 +8,7 @@ function Footer() {
       Seguinos en: &nbsp;
       <a
         className="redes"
-        href="https://www.facebook.com"
+        href="https://www.facebook.com/ligaprofesionalAFA"
         style={{"backgroundColor": "#2962ff"}}
         target="_blank"
       >
@@ -16,7 +16,7 @@ function Footer() {
       </a>
       <a
         className="redes"
-        href="https://twitter.com"
+        href="https://twitter.com/LigaAFA"
         style={{"backgroundColor": "#5ba4d6"}}
         target="_blank"
       >
@@ -25,7 +25,7 @@ function Footer() {
       <a
         className="redes"
         style={{"backgroundColor": "#ec4c51"}}
-        href="https://www.instagram.com"
+        href="https://www.instagram.com/ligaprofesionalafa/"
         target="_blank"
       >
         <i title="Instagram" className="fab fa-instagram"></i>
