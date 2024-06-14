@@ -83,18 +83,40 @@ router.put("/api/jugadores/:id", async (req, res) => {
   }
 });
 
-router.delete('/api/jugadores/:id', async (req, res) => {
-  try {
-    const numFilasEliminadas = await db.jugadores.destroy({
+router.delete("/api/jugadores/:id", async (req, res) => {
+  // #swagger.tags = ['Articulos']
+  // #swagger.summary = 'elimina un Articulo'
+  // #swagger.parameters['id'] = { description: 'identificador del Articulo..' }
+
+  let bajaFisica = false;
+
+  if (bajaFisica) {
+    // baja fisica
+    let filasBorradas = await db.jugadores.destroy({
       where: { IdJugador: req.params.id },
     });
-    if (numFilasEliminadas === 1) {
-      res.json({ message: 'Jugador eliminado correctamente' });
-    } else {
-      res.status(404).json({ error: 'Jugador no encontrado' });
+    if (filasBorradas == 1) res.sendStatus(200);
+    else res.sendStatus(404);
+  } else {
+    // baja lógica
+    try {
+      let data = await db.sequelize.query(
+        "UPDATE jugadores SET Activo = case when Activo = 1 then 0 else 1 end WHERE IdJugador = :IdJugador",
+        {
+          replacements: { IdJugador: +req.params.id },
+        }
+      );
+      res.sendStatus(200);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        // si son errores de validación, los devolvemos
+        const messages = err.errors.map((x) => x.message);
+        res.status(400).json(messages);
+      } else {
+        // si son errores desconocidos, los dejamos que los controle el middleware de errores
+        throw err;
+      }
     }
-  } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar el Jugador' });
   }
 });
 module.exports = router;

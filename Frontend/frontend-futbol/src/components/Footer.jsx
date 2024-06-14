@@ -5,9 +5,7 @@ function Footer() {
     <small>
       <span>© WEB FUTBOL</span>
       <span className="m-4">-</span>
-      <a href="tel:113"> <span className="fa fa-phone"></span> 0810-888-1234 </a>
-      <span className="m-4">-</span>
-      Seguinos en
+      Seguinos en: &nbsp;
       <a
         className="redes"
         href="https://www.facebook.com"
