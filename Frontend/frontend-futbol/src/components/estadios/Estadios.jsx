@@ -28,13 +28,13 @@ function Estadios() {
   const [Pagina, setPagina] = useState(1);
   const [Paginas, setPaginas] = useState([]);
 
-  const [Equipos, setEquipos] = useState(null);
+  const [Partidos, setPartidos] = useState(null);
 
   // cargar al "montar" el componente, solo la primera vez (por la dependencia [])
   useEffect(() => {
     async function BuscarPartidos() {
       let data = await partidosService.Buscar();
-      setEquipos(data);
+      setPartidos(data);
     }
     BuscarPartidos();
   }, []);

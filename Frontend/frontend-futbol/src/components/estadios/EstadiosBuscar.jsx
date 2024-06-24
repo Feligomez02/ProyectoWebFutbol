@@ -6,7 +6,7 @@ export default function EstadiosBuscar ({NombreEstadio, setNombreEstadio, Activo
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-4 col-md-2">
-            <label className="col-form-label">NombreEstadio:</label>
+            <label className="col-form-label">Nombre Estadio:</label>
           </div>
           <div className="col-sm-8 col-md-4">
             <input
@@ -19,7 +19,7 @@ export default function EstadiosBuscar ({NombreEstadio, setNombreEstadio, Activo
             />
           </div>
           <div className="col-sm-4 col-md-2">
-            <label className="col-form-label">ActivoEstadio:</label>
+            <label className="col-form-label">Activo Estadio:</label>
           </div>
           <div className="col-sm-8 col-md-4">
             <select
