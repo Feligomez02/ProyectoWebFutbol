@@ -54,29 +54,29 @@ export default function EstadiosRegistro({
           {/* campo IdPartido */}
           <div className="row">
             <div className="col-sm-4 col-md-3 offset-md-1">
-              <label className="col-form-label" htmlFor="PartidoId">
+              <label className="col-form-label" htmlFor="IdPartido">
                 Partido Id<span className="text-danger">*</span>:
               </label>
             </div>
             <div className="col-sm-8 col-md-6">
             <select
-                {...register("PartidoId", {
-                    required: { value: true, message: "PartidoId es requerido" },
+                {...register("IdPartido", {
+                    required: { value: true, message: "IdPartido es requerido" },
                 })}
                 className={
                     "form-control " +
-                    (errors?.PartidoId ? "is-invalid" : "")
+                    (errors?.IdPartido ? "is-invalid" : "")
                 }
                 >
                 <option value="" key={1}></option>
                 {Partidos?.map((x) => (
-                    <option value={x.PartidoId} key={x.IdPartido}>
+                    <option value={x.IdPartido} key={x.IdPartido}>
                     {x.NombrePartido}
                     </option>
                 ))}
                 </select>
                 <div className="invalid-feedback">
-                {errors?.PartidoId?.message}
+                {errors?.IdPartido?.message}
                 </div>
 
             </div>

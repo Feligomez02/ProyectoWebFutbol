@@ -93,7 +93,7 @@ function Estadios() {
     setItem({
         IdEstadio: generateRandomId(),
         NombreEstadio: '',
-        PartidoId: '',
+        IdPartido: '',
         ActivoEstadio: true,
         FechaEstadio: moment().format("YYYY-MM-DD"),
       });
