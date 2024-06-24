@@ -8,6 +8,8 @@ import { Jugadores } from "./components/jugadores/Jugadores";
 import { ModalDialog } from "./components/ModalDialog";
 import { Arbitros } from "./components/Arbitros";
 import { Designaciones } from "./components/designaciones/Designaciones";
+import { Estadios  } from "./components/estadios/Estadios";
+import {Partidos} from "./components/Partidos";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
               <Route path="/jugadores" element={<Jugadores />} />
               <Route path="/arbitros" element={<Arbitros />} />
               <Route path="/designaciones" element={<Designaciones />} />
+              <Route path="/estadios" element={<Estadios />} />
+              <Route path="/partidos" element={<Partidos />} />
 
             </Routes>
         </div>

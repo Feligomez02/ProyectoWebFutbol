@@ -28,8 +28,8 @@ export default function EstadiosListado({
         <tbody>
           {Items && Items.map((Item) => (
             <tr key={Item.IdEstadio}>
-              <td>{Item.Nombre}</td>
-              <td className="text-center">{Item.IdPartido}</td>
+              <td>{Item.NombreEstadio}</td>
+              <td className="text-center">{Item.PartidoId}</td>
               <td className="text-center">{Item.ActivoEstadio ? "SI" : "NO"}</td>
               <td className="text-center">
                 {moment(Item.FechaEstadio).format("DD/MM/YYYY")}

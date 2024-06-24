@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import EstadiosBuscar from "./EstadiosBuscar";
 import EstadiosListado from "./EstadiosListado";
-import EstadiosRegistro from "./EstadiosRegistro";
+import EstadiosRegistro from "./EstadiosRegistros";
 import { partidosService } from "../../services/partidos.service";
 import { estadiosService } from "../../services/estadios.service";
 import modalDialogService from "../../services/modalDialog.service";
@@ -19,8 +19,8 @@ function Estadios() {
   };
   const [AccionABMC, setAccionABMC] = useState("L");
 
-  const [Nombre, setNombre] = useState("");
-  const [Activo, setActivo] = useState("");
+  const [NombreEstadio, setNombreEstadio] = useState("");
+  const [ActivoEstadio, setActivoEstadio] = useState("");
 
   const [Items, setItems] = useState(null);
   const [Item, setItem] = useState(null); // usado en BuscarporId (Modificar, Consultar)

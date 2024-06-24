@@ -52,6 +52,16 @@ function Menu() {
               Designaciones
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/partidos">
+              Partidos
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/estadios">
+              Estadios
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
