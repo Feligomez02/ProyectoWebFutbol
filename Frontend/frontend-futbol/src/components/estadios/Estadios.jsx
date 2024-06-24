@@ -73,7 +73,7 @@ function Estadios() {
     BuscarPorId(item, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
   }
   function Modificar(item) {
-    if (!item.Activo) {
+    if (!item.ActivoEstadio) {
       //alert("No puede modificarse un registro Inactivo.");
       modalDialogService.Alert("No puede modificarse un registro Inactivo.");
       return;
@@ -92,7 +92,7 @@ function Estadios() {
     setItem({
         IdEstadio: generateRandomId(),
         NombreEstadio: '',
-        IdPartido: '',
+        PartidoId: '',
         ActivoEstadio: true,
         FechaEstadio: moment().format("YYYY-MM-DD"),
       });
@@ -106,7 +106,7 @@ function Estadios() {
   async function ActivarDesactivar(item) {
     modalDialogService.Confirm(
       "Esta seguro que quiere " +
-        (item.Activo ? "desactivar" : "activar") +
+        (item.ActivoEstadio ? "desactivar" : "activar") +
         " el registro?",
       undefined,
       undefined,
@@ -194,7 +194,7 @@ function Estadios() {
       {/* Formulario de alta/modificacion/consulta */}
       {AccionABMC !== "L" && (
         <EstadiosRegistro
-          {...{ AccionABMC, Equipos, Item, Grabar, Volver }}
+          {...{ AccionABMC, Partidos, Item, Grabar, Volver }}
         />
       )}
     </div>
