@@ -18,6 +18,7 @@ async function Buscar(NombreEstadio, ActivoEstadio, Pagina) {
 
 async function BuscarPorId(item) {
   const resp = await httpService.get(urlResource + "/" + item.IdEstadio);
+  resp.data.FechaEstadio = resp.data.FechaEstadio.substring(0, 10);
   return resp.data;
 }
 
