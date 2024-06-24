@@ -101,7 +101,7 @@ router.delete("/api/estadios/:id", async (req, res) => {
     // baja lógica
     try {
       let data = await db.sequelize.query(
-        "UPDATE estadios SET Activo = case when Activo = 1 then 0 else 1 end WHERE IdEstadio = :IdEstadio",
+        "UPDATE estadios SET ActivoEstadio = case when ActivoEstadio = 1 then 0 else 1 end WHERE IdEstadio = :IdEstadio",
         {
           replacements: { IdEstadio: +req.params.id },
         }
