@@ -152,8 +152,10 @@ function Jugadores() {
 
   return (
     <div>
+      <div className="container mt-1">
       <div className="tituloPagina">
         Jugadores <small>{TituloAccionABMC[AccionABMC]}</small>
+      </div>
       </div>
 
       {AccionABMC === "L" && (
@@ -197,7 +199,7 @@ function Jugadores() {
           {...{ AccionABMC, Equipos, Item, Grabar, Volver }}
         />
       )}
-    </div>
+      </div>
   );
 }
 export { Jugadores };

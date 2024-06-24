@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 function Inicio() {
   return (
+    <div className="container text-center mt-4">
     <div className="mt-4 p-5 rounded" style={{ backgroundColor: "lightgray" }}>
       <img 
           src="https://upload.wikimedia.org/wikipedia/commons/8/85/Logo_lpf_afa.png" 
@@ -27,7 +28,13 @@ function Inicio() {
         <i className="fa fa-search"> </i>
         Ver Arbitros
       </Link>
+
+      <Link to="/partidos" className="btn btn-primary" style={{ marginRight: '20px' }}>
+        <i className="fa fa-search"> </i>
+        Ver Partidos
+      </Link>
     </div>
+  </div>
   );
 }
 export { Inicio };

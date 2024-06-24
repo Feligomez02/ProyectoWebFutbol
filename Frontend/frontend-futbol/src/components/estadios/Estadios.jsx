@@ -153,8 +153,10 @@ function Estadios() {
 
   return (
     <div>
+      <div className="container mt-1">
       <div className="tituloPagina">
         Estadios <small>{TituloAccionABMC[AccionABMC]}</small>
+      </div>
       </div>
 
       {AccionABMC === "L" && (

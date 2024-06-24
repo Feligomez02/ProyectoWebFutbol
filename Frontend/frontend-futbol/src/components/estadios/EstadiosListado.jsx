@@ -52,7 +52,7 @@ export default function EstadiosListado({
                 <button
                   className={
                     "btn btn-sm " +
-                    (Item.Activo
+                    (Item.ActivoEstadio
                       ? "btn-outline-danger"
                       : "btn-outline-success")
                   }

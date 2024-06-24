@@ -30,32 +30,21 @@ async function ActivarDesactivar(item) {
 
 async function Grabar(item) {
   try {
-    const response = await httpService.get(urlResource);
-    let itemExists = false;
-    
-    for (let i = 0; i < response.data.Items.length; i++) {
-      if (response.data.Items[i].IdEstadio === item.IdEstadio) {
-        console.log("Existing IdEstadio found: ", response.data.Items[i].IdEstadio);
-        await httpService.put(urlResource + "/" + item.IdEstadio, item);
-        itemExists = true;
-        break; // Exit the loop since we found the item and updated it
-      }
-    }
-    
-    if (!itemExists) {
-      console.log("New IdEstadio, creating: ", item.IdEstadio);
+    const response = await httpService.get(urlResource + "/" + item.IdEstadio);
+    if (response.data) {
+      // Si existe, actualizar el registro
+      await httpService.put(urlResource + "/" + item.IdEstadio, item);
+    } else {
+      // Si no existe, crear uno nuevo
       await httpService.post(urlResource, item);
     }
   } catch (error) {
     if (error.response) {
-      // Server responded with a status other than 200 range
       console.error(`HTTP error occurred: ${error.response.status} ${error.response.statusText}`);
       console.error("Response data:", error.response.data);
     } else if (error.request) {
-      // No response received
       console.error("No response received:", error.request);
     } else {
-      // Other errors
       console.error("Error occurred while processing the item:", error.message);
     }
   }

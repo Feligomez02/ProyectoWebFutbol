@@ -3,9 +3,10 @@ body {
 }
 
 .divBody {
-  background-color: white;
+  background-image: url('/background.jpg');
   min-height: 75vh;
   padding: 1rem;
+  
 }
 
 /* pie de la pagina */
@@ -38,11 +39,16 @@ footer .redes {
   font-family: 'Arial', sans-serif;
   font-size: 24px;
   color: #333;
-  text-align: center;
+  text-align: center; /* Centra el texto horizontalmente */
   text-shadow: 1px 1px 1px #ccc;
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  padding: 10px 20px; /* Espacio alrededor del texto */
+  border-radius: 5px; /* Bordes redondeados */
+  display: inline-block; /* Ajusta el ancho del elemento al contenido */
+  width: 100%; /* Ancho completo del contenedor */
 }
 
 /* todos los formularios */
@@ -152,3 +158,4 @@ thead {
   margin: 0.3em;
   text-decoration: none;
 }
+

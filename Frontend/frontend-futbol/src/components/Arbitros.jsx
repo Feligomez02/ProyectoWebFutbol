@@ -23,7 +23,8 @@ function Arbitros() {
 
   return (
     <div>
-      <div className="tituloPagina">{tituloPagina}</div>
+      <div className="container mt-1">
+      <div className="tituloPagina">{tituloPagina}</div></div>
       <table className="table table-bordered table-striped">
         <thead>
           <tr>

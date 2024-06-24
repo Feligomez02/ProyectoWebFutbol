@@ -152,8 +152,10 @@ function Designaciones() {
 
   return (
     <div>
+      <div className="container mt-1">
       <div className="tituloPagina">
         Designaciones <small>{TituloAccionABMC[AccionABMC]}</small>
+      </div>
       </div>
 
       {AccionABMC === "L" && (
