@@ -22,11 +22,7 @@ app.use(arbitrosRouter);
 const estadiosRouter = require("./routes/estadios");
 app.use(estadiosRouter);
 
-const torneosRouter = require("./routes/torneos");
-app.use(torneosRouter);
 
-const resultadosRouter = require("./routes/resultados");
-app.use(resultadosRouter);
 
 const designacionesRouter = require("./routes/designaciones");
 app.use(designacionesRouter);
