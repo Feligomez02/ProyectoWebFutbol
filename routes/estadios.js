@@ -10,15 +10,15 @@ router.get("/api/estadios", async function (req, res, next) {
   // consulta de artículos con filtros y paginacion
 
   let where = {};
-  if (req.query.Nombre != undefined && req.query.Nombre !== "") {
-    where.Nombre = {
-      [Op.like]: "%" + req.query.Nombre + "%",
+  if (req.query.NombreEstadio != undefined && req.query.NombreEstadio !== "") {
+    where.NombreEstadio = {
+      [Op.like]: "%" + req.query.NombreEstadio + "%",
     };
   }
-  if (req.query.Activo != undefined && req.query.Activo !== "") {
+  if (req.query.ActivoEstadio != undefined && req.query.ActivoEstadio !== "") {
     // true o false en el modelo, en base de datos es 1 o 0
     // convertir el string a booleano
-    where.Activo = req.query.Activo === "true";
+    where.ActivoEstadio = req.query.ActivoEstadio === "true";
   }
   const Pagina = req.query.Pagina ?? 1;
   const TamañoPagina = 10;

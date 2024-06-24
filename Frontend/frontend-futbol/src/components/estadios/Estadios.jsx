@@ -65,6 +65,7 @@ function Estadios() {
   async function BuscarPorId(item, accionABMC) {
     const data = await estadiosService.BuscarPorId(item);
     setItem(data);
+    console.log("item: ",Item)
     setAccionABMC(accionABMC);
   }
   
