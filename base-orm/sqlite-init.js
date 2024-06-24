@@ -151,10 +151,10 @@ async function CrearBaseSiNoExiste() {
       `CREATE table estadios( 
               IdEstadio INTEGER PRIMARY KEY AUTOINCREMENT
             , NombreEstadio text NOT NULL 
-            , PartidoId integer NOT NULL
+            , IdPartido integer NOT NULL
             , ActivoEstadio boolean NOT NULL
             , FechaEstadio date,
-            FOREIGN KEY (PartidoId) REFERENCES partidos(IdPartido)
+            FOREIGN KEY (IdPartido) REFERENCES partidos(IdPartido)
             );`
     );
     console.log("tabla estadios creada!");
@@ -171,56 +171,6 @@ async function CrearBaseSiNoExiste() {
         (8, 'Estadio Azteca', 8, true, '2024-05-29'),
         (9, 'Estadio Monumental', 9, false, '2024-05-28'),
         (10, 'Wembley Stadium', 10, true, '2024-05-27')
-      ;`
-    );
-  }
-
-  existe = false;
-  res = await db.get(
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'torneos'",
-    []
-  ); 
-  if (res.contar > 0) existe = true;
-  if (!existe) {
-    await db.run(
-      "CREATE table torneos( IdTorneo INTEGER PRIMARY KEY AUTOINCREMENT, Nombre text NOT NULL, FechaInicio date, Activo boolean NOT NULL);"
-    );
-    console.log("tabla torneos creada!");
-    await db.run(
-      "insert into torneos values	(1, 'Premier', '1901-05-25', true), (2, 'Ligue One', '1905-04-03', true), (3, 'Serie A', '1905-08-01', true), (4, 'La Liga', '1903-03-25', true), (5, 'Liga Argentina', '1908-04-01', true), (6, 'Eredivisie', '1910-01-01', true), (7, 'Libertadores', '1905-08-04', true), (8, 'Sudamericana', '1887-06-03', true), (9, 'Eurocopa', '1905-03-19', true), (10, 'Champions League', '1889-12-24', true);"
-    );
-  }
-
-  existe = false;
-  sql =
-    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'resultados'";
-  res = await db.get(sql, []);
-  if (res.contar > 0) existe = true;
-  if (!existe) {
-    await db.run(
-      `CREATE table resultados( 
-              IdResultado INTEGER PRIMARY KEY AUTOINCREMENT
-            , Descripcion text NOT NULL 
-            , TorneoId integer NOT NULL
-            , Activo boolean NOT NULL
-            , FechaResultado date,
-            FOREIGN KEY (TorneoId) REFERENCES torneos(IdTorneo)
-            );`
-    );
-    console.log("tabla resultados creada!");
-
-    await db.run(
-      `insert into resultados values
-      (1, 'Resultado del partido 1 del Torneo 7', 7, true, '2024-06-01'), 
-      (2, 'Resultado del partido 2 del Torneo 5', 5, false, '2024-06-02'), 
-      (3, 'Resultado del partido 3 del Torneo 1', 1, true, '2024-06-03'), 
-      (4, 'Resultado del partido 1 del Torneo 2', 2, true, '2024-06-04'), 
-      (5, 'Resultado del partido 2 del Torneo 9', 9, false, '2024-06-05'), 
-      (6, 'Resultado del partido 3 del Torneo 6', 6, false, '2024-06-06'), 
-      (7, 'Resultado del partido 1 del Torneo 10', 10, true, '2024-06-07'), 
-      (8, 'Resultado del partido 2 del Torneo 1', 1, false, '2024-06-08'), 
-      (9, 'Resultado del partido 3 del Torneo 7', 7, true, '2024-06-09'), 
-      (10, 'Resultado del partido 4 del Torneo 1', 1, true, '2024-06-10');
       ;`
     );
   }

@@ -11,7 +11,7 @@ describe('GET /api/estadios', function () {
           expect.objectContaining({
             IdEstadio: expect.any(Number),
             NombreEstadio: expect.any(String),
-            PartidoId: expect.any(Number),
+            IdPartido: expect.any(Number),
             FechaEstadio: expect.any(String),
             ActivoEstadio: expect.any(Boolean),
           }),
@@ -34,7 +34,7 @@ describe('POST /api/estadios', function () {
     it('debería crear un nuevo estadio', async function () {
       const res = await request(app)
         .post('/api/estadios')
-        .send({ NombreEstadio: 'Kempes', PartidoId: 2, ActivoEstadio: false, FechaEstadio: '2024-06-01' });
+        .send({ NombreEstadio: 'Kempes', IdPartido: 2, ActivoEstadio: false, FechaEstadio: '2024-06-01' });
   
       // Agregar un registro de depuración para ver el cuerpo de la respuesta
       if (res.statusCode !== 200) {
@@ -44,7 +44,7 @@ describe('POST /api/estadios', function () {
       expect(res.statusCode).toBe(200);
       expect(res.body).toMatchObject({
         NombreEstadio: 'KEMPES',
-        PartidoId: 2,
+        IdPartido: 2,
         ActivoEstadio: false,
         FechaEstadio: '2024-06-01T00:00:00.000Z',
       });
@@ -55,7 +55,7 @@ describe('PUT /api/estadios/:id', function () {
   it('debería actualizar un estadio', async function () {
     const res = await request(app)
       .put('/api/estadios/1')
-      .send({ NombreEstadio: 'Alberdi', PartidoId:2, ActivoEstadio: true, FechaEstadio: '1910-10-25' });
+      .send({ NombreEstadio: 'Alberdi', IdPartido:2, ActivoEstadio: true, FechaEstadio: '1910-10-25' });
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual([1]);
   });
@@ -65,13 +65,13 @@ describe('DELETE /api/estadios/:id', function () {
   beforeAll(async () => {
     await request(app)
       .post('/api/estadios')
-      .send({ NombreEstadio: 'EstadioToDelete', PartidoId: 5, ActivoEstadio: true,  FechaEstadio: '2024-01-01' });
+      .send({ NombreEstadio: 'EstadioToDelete', IdPartido: 5, ActivoEstadio: true,  FechaEstadio: '2024-01-01' });
   });
 
   it('debería eliminar un estadio', async function () {
     const estadioToDelete = await request(app)
       .post('/api/estadios')
-      .send({ NombreEstadio: 'EstadioToDelete', PartidoId: 5, ActivoEstadio: true, FechaEstadio: '2024-01-01' });
+      .send({ NombreEstadio: 'EstadioToDelete', IdPartido: 5, ActivoEstadio: true, FechaEstadio: '2024-01-01' });
     
     const res = await request(app).delete(`/api/estadios/${estadioToDelete.body.IdEstadio}`);
     expect(res.statusCode).toBe(200);
