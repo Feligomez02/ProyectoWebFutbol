@@ -55,7 +55,7 @@ export default function EstadiosRegistro({
           <div className="row">
             <div className="col-sm-4 col-md-3 offset-md-1">
               <label className="col-form-label" htmlFor="IdPartido">
-                Partido Id<span className="text-danger">*</span>:
+                Partido <span className="text-danger">*</span>:
               </label>
             </div>
             <div className="col-sm-8 col-md-6">

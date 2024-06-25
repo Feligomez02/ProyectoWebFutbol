@@ -29,7 +29,7 @@ export default function JugadoresListado({
           {Items && Items.map((Item) => (
             <tr key={Item.IdJugador}>
               <td>{Item.Nombre}</td>
-              <td className="text-center">{Item.IdEquipo}</td>
+              <td className="text-center">{Item.equipos.Nombre}</td>
               <td className="text-center">{Item.Activo ? "SI" : "NO"}</td>
               <td className="text-center">
                 {moment(Item.FechaNacimiento).format("DD/MM/YYYY")}

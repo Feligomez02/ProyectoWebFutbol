@@ -23,13 +23,7 @@ router.get("/api/designaciones", async function (req, res, next) {
   const Pagina = req.query.Pagina ?? 1;
   const TamañoPagina = 10;
   const { count, rows } = await db.designaciones.findAndCountAll({
-    attributes: [
-      "IdDesignacion",
-      "IdArbitro",
-      "Descripcion",
-      "Confirmada",
-      "FechaDesig",
-    ],
+    include: "arbitro",
     order: [["Descripcion", "ASC"]],
     where,
     offset: (Pagina - 1) * TamañoPagina,

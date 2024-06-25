@@ -323,6 +323,7 @@ const designaciones = sequelize.define(
 );
 
 
+
 const estadios = sequelize.define(
   "estadios",
   {
@@ -390,6 +391,18 @@ const estadios = sequelize.define(
   }
 );
 
+
+// arbitros model
+arbitros.hasMany(designaciones, { foreignKey: 'IdArbitro', as: 'designaciones' });
+
+// designaciones model
+designaciones.belongsTo(arbitros, { foreignKey: 'IdArbitro', as: 'arbitro' });
+
+jugadores.belongsTo(equipos, { foreignKey: 'IdEquipo', as: 'equipos' });
+equipos.hasMany(jugadores, { foreignKey: 'IdEquipo', as: 'jugador' });
+
+estadios.belongsTo(partidos, { foreignKey: 'IdPartido', as: 'partidos' });
+partidos.hasMany(estadios, { foreignKey: 'IdPartido', as: 'estadio' });
 
 
 module.exports = {

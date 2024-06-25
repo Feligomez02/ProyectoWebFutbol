@@ -19,7 +19,7 @@ export default function EstadiosListado({
         <thead>
           <tr>
             <th className="text-center">NombreEstadio</th>
-            <th className="text-center">IdPartido</th>
+            <th className="text-center">Partido</th>
             <th className="text-center">Activo Estadio</th>
             <th className="text-center">Fecha de Estadio</th>
             <th className="text-center text-nowrap">Acciones</th>
@@ -29,7 +29,7 @@ export default function EstadiosListado({
           {Items && Items.map((Item) => (
             <tr key={Item.IdEstadio}>
               <td>{Item.NombreEstadio}</td>
-              <td className="text-center">{Item.IdPartido}</td>
+              <td className="text-center">{Item.partidos.NombrePartido}</td>
               <td className="text-center">{Item.ActivoEstadio ? "SI" : "NO"}</td>
               <td className="text-center">
                 {moment(Item.FechaEstadio).format("DD/MM/YYYY")}

@@ -28,7 +28,7 @@ export default function DesignacionesListado({
         <tbody>
           {Items && Items.map((Item) => (
             <tr key={Item.IdDesignacion}>
-              <td className="text-center">{Item.IdArbitro}</td>
+              <td className="text-center">{Item.arbitro.NombreApellido}</td>
               <td>{Item.Descripcion}</td>
               <td className="text-center">{Item.Confirmada ? "SI" : "NO"}</td>
               <td className="text-center">

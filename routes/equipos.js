@@ -16,6 +16,7 @@ router.get("/api/equipos/:id", async function (req, res, next) {
   res.json(data);
 });
 
+
 router.post("/api/equipos/", async (req, res) => {
   try {
     // Agregar registro de depuración para imprimir el cuerpo de la solicitud
