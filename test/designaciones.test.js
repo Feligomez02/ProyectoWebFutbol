@@ -65,13 +65,13 @@ describe('DELETE /api/designaciones/:id', function () {
   beforeAll(async () => {
     await request(app)
       .post('/api/designaciones')
-      .send({ Nombre: 'designacionToDelete', IdDesignacion: 5, IdArbitro: 1 , Descripcion: 'Fernando Rapalini Dirige el 2 de Julio de 2024' , Activo: true, FechaDesig: '2024-07-02' });
+      .send({ Nombre: 'designacionToDelete', IdDesignacion: 5, IdArbitro: 1 , Descripcion: 'Fernando Rapalini Dirige el 2 de Julio de 2024' , Confirmada: true, FechaDesig: '2024-07-02' });
   });
 
   it('debería eliminar un designacion', async function () {
     const designacionToDelete = await request(app)
       .post('/api/designaciones')
-      .send({ Nombre: 'designacionToDelete', IdDesignacion: 5, IdArbitro: 1 , Descripcion: 'Fernando Rapalini Dirige el 2 de Julio de 2024' , Activo: true, FechaDesig: '2024-07-02' });
+      .send({ Nombre: 'designacionToDelete', IdDesignacion: 5, IdArbitro: 1 , Descripcion: 'Fernando Rapalini Dirige el 2 de Julio de 2024' , Confirmada: true, FechaDesig: '2024-07-02' });
     
     const res = await request(app).delete(`/api/designaciones/${designacionToDelete.body.IdDesignacion}`);
     expect(res.statusCode).toBe(200);
