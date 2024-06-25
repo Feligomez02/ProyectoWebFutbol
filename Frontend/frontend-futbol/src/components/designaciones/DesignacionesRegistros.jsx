@@ -75,7 +75,7 @@ export default function DesignacionesRegistro({
                     "form-control " + (errors.Descripcion ? "is-invalid" : "")
                 }
               />
-              {errors.Descripcion && touchedFields.DEscripcion && (
+              {errors.Descripcion && touchedFields.Descripcion && (
                 <div className ="invalidfeedback">
                   {errors?.Descripcion?.message}
                 </div>)
