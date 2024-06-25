@@ -18,7 +18,7 @@ router.get("/api/designaciones", async function (req, res, next) {
   if (req.query.Confirmada != undefined && req.query.Confirmada !== "") {
     // true o false en el modelo, en base de datos es 1 o 0
     // convertir el string a booleano
-    where.Activo = req.query.Confirmada === "true";
+    where.Confirmada = req.query.Confirmada === "true";
   }
   const Pagina = req.query.Pagina ?? 1;
   const TamañoPagina = 10;

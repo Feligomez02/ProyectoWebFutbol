@@ -29,7 +29,7 @@ function Partidos() {
         <thead>
           <tr>
             <th style={{ width: "40%" }}>IdPartidos</th>
-            <th style={{ width: "60%" }}>NombrePartido</th>
+            <th style={{ width: "60%" }}>Nombre Partido</th>
           </tr>
         </thead>
         <tbody>
